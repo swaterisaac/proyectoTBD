@@ -3,9 +3,10 @@ package grupo2.proyectoTBD.repositories;
 import grupo2.proyectoTBD.models.Emergency;
 import grupo2.proyectoTBD.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 import org.sql2o.Sql2o;
-
+@Repository
 public class UserRepository {
     @Autowired
     private Sql2o sql2o;
