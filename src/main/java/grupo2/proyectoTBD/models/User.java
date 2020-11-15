@@ -1,12 +1,23 @@
 package grupo2.proyectoTBD.models;
 
-public class User{
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+
+public class User implements Serializable{
+
+	@SerializedName("id")
     private Long id;
+	@SerializedName("rut")
     private String rut;
+	@SerializedName("first_name")
     private String first_name;
+	@SerializedName("email")
     private String email;
-    private String password; 
+	@SerializedName("password")
+    private String password;
+	@SerializedName("last_name")
     private String last_name;
+	@SerializedName("phone")
     private String phone; 
 
 	public Long getId() {
