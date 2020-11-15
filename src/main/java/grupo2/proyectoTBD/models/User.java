@@ -18,7 +18,17 @@ public class User implements Serializable{
 	@SerializedName("last_name")
     private String last_name;
 	@SerializedName("phone")
-    private String phone; 
+	private String phone; 
+	@SerializedName("deleted")
+	private Boolean deleted;
+
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
 	public Long getId() {
 		return this.id;

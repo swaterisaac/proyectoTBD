@@ -3,18 +3,38 @@ package grupo2.proyectoTBD.models;
 import java.sql.Timestamp;
 
 public class Task {
+    @SerializedName("id")
     private Long id;
+    @SerializedName("name")
     private String name;
+    @SerializedName("description")
     private String description;
+    @SerializedName("volunteer_required")
     private Integer volunteer_required;
+    @SerializedName("volunteer_registred")
     private Integer volunteer_registered;
+    @SerializedName("start_date")
     private Timestamp start_date;
+    @SerializedName("final_date")
     private Timestamp final_date;
+    @SerializedName("created_at")
     private String created_at;
+    @SerializedName("delete")
+    private Boolean deleted;
 
     //foraneas
+    @SerializedName("id_status")
     private Long id_status;
+    @SerializedName("id_emergency")
     private Long id_emergency;
+
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
     public Long getId() {
         return id;

@@ -1,8 +1,20 @@
 package grupo2.proyectoTBD.models;
 
 public class Institution{
-    private Long id;
-    private String name;
+	@SerializedName("id")
+	private Long id;
+	@SerializedName("name")
+	private String name;
+	@SerializedName("deleted")
+	private Boolean deleted;
+
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
     public Long getId() {
 		return this.id;

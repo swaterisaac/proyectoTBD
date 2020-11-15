@@ -1,12 +1,28 @@
 package grupo2.proyectoTBD.models;
 
 public class Ranking {
+    @SerializedName("id")
     private Long id;
+    @SerializedName("score")
     private Integer score;
+    @SerializedName("flg_invited")
     private boolean flg_invited;
+    @SerializedName("flg_participates")
     private boolean flg_participates;
+    @SerializedName("id_task")
     private Long id_task;
+    @SerializedName("id_volunteer")
     private Long id_volunteer;
+    @SerializedName("deleted")
+    private Boolean deleted;
+
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
 
     public Long getId() {
         return id;

@@ -4,14 +4,33 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 public class Emergency {
+    @SerializedName("id")
     private Long id;
+    @SerializedName("id_status")
     private Long id_status;  //No se si esta bien poner ese tipo de dato en las fk
+    @SerializedName("name")
     private String name;
+    @SerializedName("description")
     private String description;
+    @SerializedName("start_date")
     private Date start_date; //No se que tipo de dato es date.
+    @SerializedName("final_date")
     private Date final_date;
+    @SerializedName("id_institution")
     private Long id_institution;
+    @SerializedName("created_at")
     private Timestamp created_at;
+    @SerializedName("deleted")
+    private Boolean deleted;
+
+	public Boolean getDeleted() {
+		return this.deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 
 //... Getters y setters
 
