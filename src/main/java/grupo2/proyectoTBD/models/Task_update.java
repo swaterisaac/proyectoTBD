@@ -16,4 +16,28 @@ public class Task_update {
     public void setId(Long id) {
         this.id = id;
     }
+
+    public Timestamp getCreated_at() {
+        return created_at;
+    }
+
+    public void setCreated_at(Timestamp created_at) {
+        this.created_at = created_at;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getId_task() {
+        return id_task;
+    }
+
+    public void setId_task(Long id_task) {
+        this.id_task = id_task;
+    }
 }
