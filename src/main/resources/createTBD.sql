@@ -1,21 +1,36 @@
+--Drop of tables
+DROP TABLE IF EXISTS "volunteers_skills" CASCADE;
+DROP TABLE IF EXISTS "emergency_skills" CASCADE;
+DROP TABLE IF EXISTS "emergency_skills_tasks" CASCADE;
+DROP TABLE IF EXISTS "institutions" CASCADE;
+DROP TABLE IF EXISTS "emergencies" CASCADE;
+DROP TABLE IF EXISTS "task_update" CASCADE;
+DROP TABLE IF EXISTS "skills" CASCADE;
+DROP TABLE IF EXISTS "rankings" CASCADE;
+DROP TABLE IF EXISTS "status" CASCADE;
+DROP TABLE IF EXISTS "tasks" CASCADE;
+DROP TABLE IF EXISTS "users" CASCADE;
+DROP TABLE IF EXISTS "volunteers" CASCADE;
+
+--Creation of tables
 CREATE TABLE "volunteers_skills" (
   "id" SERIAL,
-  "id_volunteer" integer,
-  "id_skill" integer,
+  "id_volunteer" integer NOT NULL,
+  "id_skill" integer NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "emergency_skills" (
   "id" SERIAL,
-  "id_emergency" integer,
-  "id_skill" integer,
+  "id_emergency" integer NOT NULL,
+  "id_skill" integer NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "emergency_skills_tasks" (
   "id" SERIAL,
-  "id_eme_skills" integer,
-  "id_task" integer,
+  "id_eme_skills" integer NOT NULL,
+  "id_task" integer NOT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -27,12 +42,12 @@ CREATE TABLE "institutions" (
 
 CREATE TABLE "emergencies" (
   "id" SERIAL,
-  "id_status" integer,
+  "id_status" integer NOT NULL,
   "name" varchar(100),
   "description" varchar(255),
   "start_date" date,
   "final_date" date,
-  "id_institution" integer,
+  "id_institution" integer NOT NULL,
   "created_at" timestamp,
   PRIMARY KEY ("id")
 );
@@ -41,7 +56,7 @@ CREATE TABLE "task_update" (
   "id" SERIAL,
   "created_at" timestamp,
   "description" varchar(255),
-  "id_task" integer,
+  "id_task" integer NOT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -57,8 +72,8 @@ CREATE TABLE "rankings" (
   "score" integer,
   "flg_invited" boolean,
   "flg_participates" boolean,
-  "id_task" integer,
-  "id_volunteer" integer,
+  "id_task" integer NOT NULL,
+  "id_volunteer" integer NOT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -76,18 +91,18 @@ CREATE TABLE "tasks" (
   "volunteer_registered" integer,
   "start_date" date,
   "final_date" date,
-  "created_at" timestamp,
-  "id_status" integer,
-  "id_emergency" integer,
+  "created_at" timestamp NOT NULL,
+  "id_status" integer NOT NULL,
+  "id_emergency" integer NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "users" (
   "id" SERIAL,
-  "rut" varchar(10),
-  "first_name" varchar(100),
-  "email" varchar(100),
-  "password" varchar(26),
+  "rut" varchar(10) NOT NULL,
+  "first_name" varchar(100) NOT NULL,
+  "email" varchar(100) NOT NULL,
+  "password" varchar(26) NOT NULL,
   "last_name" varchar(100),
   "phone" varchar(10),
   PRIMARY KEY ("id")
@@ -95,7 +110,98 @@ CREATE TABLE "users" (
 
 CREATE TABLE "volunteers" (
   "id" SERIAL,
-  "name" varchar(100),
+  "id_user" integer NOT NULL,
   PRIMARY KEY ("id")
 );
+
+--Creation of FK
+ALTER TABLE "volunteers_skills"
+ADD CONSTRAINT volunteer_fk
+FOREIGN KEY ("id_volunteer")
+REFERENCES volunteers("id")
+ON DELETE CASCADE;
+
+
+ALTER TABLE "volunteers_skills"
+ADD CONSTRAINT skill_fk
+FOREIGN KEY ("id_skill")
+REFERENCES skills("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "tasks"
+ADD CONSTRAINT emergency_fk
+FOREIGN KEY ("id_emergency")
+REFERENCES emergencies("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "tasks"
+ADD CONSTRAINT status_fk
+FOREIGN KEY ("id_status")
+REFERENCES status("id")
+ON DELETE CASCADE;
+
+
+
+ALTER TABLE "emergencies"
+ADD CONSTRAINT status_fk
+FOREIGN KEY ("id_status")
+REFERENCES status("id")
+ON DELETE CASCADE;
+
+
+ALTER TABLE "emergencies"
+ADD CONSTRAINT institution_fk
+FOREIGN KEY ("id_institution")
+REFERENCES institutions("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "rankings"
+ADD CONSTRAINT task_fk
+FOREIGN KEY ("id_task")
+REFERENCES tasks("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "rankings"
+ADD CONSTRAINT volunteer_fk
+FOREIGN KEY ("id_volunteer")
+REFERENCES volunteers("id")
+ON DELETE CASCADE;
+
+
+ALTER TABLE "emergency_skills_tasks"
+ADD CONSTRAINT eme_skill_fk
+FOREIGN KEY ("id_eme_skills")
+REFERENCES emergency_skills("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "emergency_skills_tasks"
+ADD CONSTRAINT tasks_fk
+FOREIGN KEY ("id_task")
+REFERENCES tasks("id")
+ON DELETE CASCADE;
+
+
+ALTER TABLE "emergency_skills"
+ADD CONSTRAINT emergency_fk
+FOREIGN KEY ("id_emergency")
+REFERENCES emergencies("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "emergency_skills"
+ADD CONSTRAINT skill_fk
+FOREIGN KEY ("id_skill")
+REFERENCES skills("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "task_update"
+ADD CONSTRAINT task_fk
+FOREIGN KEY ("id_task")
+REFERENCES tasks("id")
+ON DELETE CASCADE;
+
+ALTER TABLE "volunteers"
+ADD CONSTRAINT user_fk
+FOREIGN KEY ("id_user")
+REFERENCES users("id")
+ON DELETE CASCADE;
 
