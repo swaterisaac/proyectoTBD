@@ -35,7 +35,7 @@ public class EmergencyRepository{
         "SELECT *" +
         "FROM emergencies where id = %s".formatted(id);
         try(Connection con = sql2o.open()) {
-            return con.createQuery(sql).execute(Emergency.class);
+            return con.createQuery(sql).executeAndFetchFirst(Emergency.class);
         }
     }
 
