@@ -1,6 +1,7 @@
 package grupo2.proyectoTBD.models;
-
-public class Volunteer {
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+public class Volunteer implements Serializable{
     @SerializedName("id")
     private Long id;
     @SerializedName("id_user")

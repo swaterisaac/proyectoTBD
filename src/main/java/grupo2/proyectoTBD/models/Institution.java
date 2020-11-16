@@ -1,6 +1,7 @@
 package grupo2.proyectoTBD.models;
-
-public class Institution{
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+public class Institution implements Serializable{
 	@SerializedName("id")
 	private Long id;
 	@SerializedName("name")

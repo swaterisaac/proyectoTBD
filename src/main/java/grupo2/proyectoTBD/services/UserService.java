@@ -5,10 +5,7 @@ import com.google.gson.GsonBuilder;
 import grupo2.proyectoTBD.models.Emergency;
 import grupo2.proyectoTBD.models.User;
 import grupo2.proyectoTBD.repositories.UserRepository;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -35,6 +32,11 @@ public class UserService {
     public String getUsers(){
         List<User> users = UserRepository.getUsers();
         return gson.toJson(users);
+    }
+    @PostMapping("/")
+    public void newUser(@RequestBody String request){
+        User user = gson.fromJson(request,User.class);
+        UserRepository.newUser(user);
     }
 
 }

@@ -1,6 +1,7 @@
 package grupo2.proyectoTBD.models;
-
-public class Ranking {
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+public class Ranking implements Serializable{
     @SerializedName("id")
     private Long id;
     @SerializedName("score")

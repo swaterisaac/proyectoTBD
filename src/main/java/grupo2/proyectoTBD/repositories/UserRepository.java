@@ -16,17 +16,32 @@ public class UserRepository {
 
     public User getUser(Long id){
         String sql =
-                "SELECT *" + "FROM users where id = %s".formatted(id);
+                "SELECT *" + "FROM users where id = :id and deleted = false";
         try(Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetchFirst(User.class);
+            return con.createQuery(sql).addParameter("id",id).executeAndFetchFirst(User.class);
         }
     }
 
     public List<User> getUsers(){
         String sql =
-                "SELECT *" + "FROM users";
+                "SELECT *" + "FROM users where deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).executeAndFetch(User.class);
         }
     }
+
+    public void newUser(User user){
+        String sql = "INSERT INTO users values (:rut,:first_name,:email,:password,:last_name,:phone)";
+        try(Connection con = sql2o.open()) {
+            con.createQuery(sql).
+            addParameter("rut",user.getRut())
+            .addParameter("first_name",user.getFirst_name())
+            .addParameter("email",user.getEmail())
+            .addParameter("password",user.getPassword())
+            .addParameter("first_name",user.getFirst_name())
+            .addParameter("phone",user.getPhone()).executeUpdate();
+        }
+    }
+
+
 }

@@ -1,8 +1,9 @@
 package grupo2.proyectoTBD.models;
 
 import java.sql.Timestamp;
-
-public class Task_update {
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+public class Task_update implements Serializable{
     @SerializedName("id")
     private Long id;
     @SerializedName("created_at")

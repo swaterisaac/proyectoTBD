@@ -17,6 +17,7 @@ CREATE TABLE "volunteers_skills" (
   "id" SERIAL,
   "id_volunteer" integer NOT NULL,
   "id_skill" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -24,6 +25,7 @@ CREATE TABLE "emergency_skills" (
   "id" SERIAL,
   "id_emergency" integer NOT NULL,
   "id_skill" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -31,12 +33,14 @@ CREATE TABLE "emergency_skills_tasks" (
   "id" SERIAL,
   "id_eme_skills" integer NOT NULL,
   "id_task" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "institutions" (
   "id" SERIAL,
   "name" varchar(100),
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -49,6 +53,7 @@ CREATE TABLE "emergencies" (
   "final_date" date,
   "id_institution" integer NOT NULL,
   "created_at" timestamp,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -57,6 +62,7 @@ CREATE TABLE "task_update" (
   "created_at" timestamp,
   "description" varchar(255),
   "id_task" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -64,6 +70,7 @@ CREATE TABLE "skills" (
   "id" SERIAL,
   "name" varchar(25),
   "description" varchar(255),
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -74,12 +81,14 @@ CREATE TABLE "rankings" (
   "flg_participates" boolean,
   "id_task" integer NOT NULL,
   "id_volunteer" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "status" (
   "id" SERIAL,
   "description" varchar(20),
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -94,6 +103,7 @@ CREATE TABLE "tasks" (
   "created_at" timestamp NOT NULL,
   "id_status" integer NOT NULL,
   "id_emergency" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
@@ -105,12 +115,14 @@ CREATE TABLE "users" (
   "password" varchar(26) NOT NULL,
   "last_name" varchar(100),
   "phone" varchar(10),
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "volunteers" (
   "id" SERIAL,
   "id_user" integer NOT NULL,
+  "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
 

@@ -33,9 +33,9 @@ public class EmergencyRepository{
     public Emergency getEmergency(Long id){
         String sql =
         "SELECT *" +
-        "FROM emergencies where id = %s".formatted(id);
+        "FROM emergencies where id = :id and deleted = false";
         try(Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetchFirst(Emergency.class);
+            return con.createQuery(sql).addParameter("id",id).executeAndFetchFirst(Emergency.class);
         }
     }
 

@@ -3,7 +3,10 @@ package grupo2.proyectoTBD.models;
 import java.sql.Timestamp;
 import java.util.Date;
 
-public class Emergency {
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
+
+public class Emergency implements Serializable {
     @SerializedName("id")
     private Long id;
     @SerializedName("id_status")
