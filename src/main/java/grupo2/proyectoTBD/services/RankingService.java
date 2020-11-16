@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import grupo2.proyectoTBD.models.Ranking;
 import grupo2.proyectoTBD.repositories.RankingRepository;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,34 +23,55 @@ public class RankingService {
     }
 
     @GetMapping("/")
-    public String getRankings() {
+    ResponseEntity<String> getRankings() {
         List<Ranking> rankings = RankingRepository.getRankings();
-        return gson.toJson(rankings);
+        return new ResponseEntity<>(
+                gson.toJson(rankings),
+                HttpStatus.OK);
     }
 
 
     @PostMapping("/")
-    public String newRanking(@RequestBody String request){
+    ResponseEntity<String> newRanking(@RequestBody String request){
         Ranking ranking = gson.fromJson(request,Ranking.class);
-        return gson.toJson(RankingRepository.newRanking(ranking));
+        if(ranking != null){
+            return new ResponseEntity<>(
+                    gson.toJson(ranking),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @GetMapping("/{id}")
-    public String getRanking(@PathVariable Long id){
+    ResponseEntity<String> getRanking(@PathVariable Long id){
         Ranking ranking = RankingRepository.getRanking(id);
-        return gson.toJson(ranking);
+        if(ranking != null){
+            return new ResponseEntity<>(
+                    gson.toJson(ranking),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
-    public String editRanking(@PathVariable Long id,@RequestBody String request){
+    ResponseEntity<String> editRanking(@PathVariable Long id,@RequestBody String request){
         Ranking ranking = gson.fromJson(request,Ranking.class);
         ranking = RankingRepository.editRanking(id,ranking);
-        return gson.toJson(ranking);
+        if(ranking != null){
+            return new ResponseEntity<>(
+                    gson.toJson(ranking),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @DeleteMapping("/{id}")
-    public void deleteRanking(@PathVariable Long id){
-        RankingRepository.deleteRanking(id);
+    ResponseEntity<String> deleteRanking(@PathVariable Long id){
+        if(RankingRepository.deleteRanking(id)){
+            return new ResponseEntity<>(
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }

@@ -49,30 +49,32 @@ public class RankingRepository {
     public Ranking editRanking(Long id,Ranking ranking){
         String sql = "UPDATE rankings SET " +
                 "score = :score ," +
-                "flg_invited = :flg_invited," +
+                "flg_invited = :flg_invited ," +
                 "flg_participates = :flg_participates," +
                 "id_task = :id_task ," +
-                "id_volunteer = :id_volunteer ," +
+                "id_volunteer = :id_volunteer " +
                 "WHERE id = :id and deleted = false";
+        Long final_id = null;
         try(Connection con = sql2o.open()) {
-            id = con.createQuery(sql,true).
-                    bind(ranking).executeUpdate().getKey(Long.class);
+            final_id = con.createQuery(sql,true).
+                    bind(ranking).addParameter("id",id).executeUpdate().getKey(Long.class);
         }
         if(id != null){
-            ranking.setId(id);
+            ranking.setId(final_id);
             return ranking;
         }
         return null;
 
     }
 
-    public void deleteRanking(Long id){
-        String sql = "UPDATE rankings SET delete = true WHERE id = :id";
+    public boolean deleteRanking(Long id){
+        String sql = "UPDATE rankings SET delete = true WHERE id = :id and deleted= false";
         try(Connection con = sql2o.open()) {
-            con.createQuery(sql,true).
+            id = con.createQuery(sql,true).
                     addParameter("id",id)
-                    .executeUpdate();
+                    .executeUpdate().getKey(Long.class);
         }
+        return (id!=null);
     }
 
 

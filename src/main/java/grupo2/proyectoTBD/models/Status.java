@@ -4,8 +4,8 @@ import java.io.Serializable;
 public class Status implements Serializable{
 	@SerializedName("id")
 	private Long id;
-	@SerializedName("name")
-	private String name;
+	@SerializedName("description")
+	private String description;
 	@SerializedName("deleted")
 	private Boolean deleted;
 
@@ -25,12 +25,11 @@ public class Status implements Serializable{
 		this.id = id;
 	}
 
-	public String getName() {
-		return this.name;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setDescription(String description) {
+		this.description = description;
 	}
-
 }
