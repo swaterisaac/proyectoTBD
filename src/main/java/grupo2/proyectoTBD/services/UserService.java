@@ -34,9 +34,9 @@ public class UserService {
         return gson.toJson(users);
     }
     @PostMapping("/")
-    public void newUser(@RequestBody String request){
+    public String newUser(@RequestBody String request){
         User user = gson.fromJson(request,User.class);
-        UserRepository.newUser(user);
+        return gson.toJson(UserRepository.newUser(user));
     }
 
 }
