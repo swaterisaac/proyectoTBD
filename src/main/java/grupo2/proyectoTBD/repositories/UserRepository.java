@@ -31,14 +31,14 @@ public class UserRepository {
     }
 
     public void newUser(User user){
-        String sql = "INSERT INTO users values (:rut,:first_name,:email,:password,:last_name,:phone)";
+        String sql = "INSERT INTO users(rut,first_name,email,password,last_name,phone) values (:rut,:first_name,:email,:password,:last_name,:phone)";
         try(Connection con = sql2o.open()) {
             con.createQuery(sql).
             addParameter("rut",user.getRut())
             .addParameter("first_name",user.getFirst_name())
             .addParameter("email",user.getEmail())
             .addParameter("password",user.getPassword())
-            .addParameter("first_name",user.getFirst_name())
+            .addParameter("last_name",user.getLast_name())
             .addParameter("phone",user.getPhone()).executeUpdate();
         }
     }
