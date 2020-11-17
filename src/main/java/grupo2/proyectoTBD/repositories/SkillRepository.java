@@ -22,7 +22,7 @@ public class SkillRepository {
     }
 
     public Skill newSkill(Skill skill){
-        String sql = "INSERT INTO skill(name,description) " +
+        String sql = "INSERT INTO skills(name,description) " +
                 "values (:name,:description)";
         Long id = null;
         try(Connection con = sql2o.open()) {
@@ -45,17 +45,19 @@ public class SkillRepository {
         }
     }
 
-    public Skill editSkill(Long id, Skill skill){
+    public Skill editSkill(Long id,Skill skill){
         String sql = "UPDATE skills SET " +
-                "name = :name ," +
+                "name = :name" +
                 "description = :description " +
                 "WHERE id = :id and deleted = false";
         Long final_id = null;
         try(Connection con = sql2o.open()) {
-            final_id = con.createQuery(sql,true).
-                    bind(skill).addParameter("id",id).executeUpdate().getKey(Long.class);
+            final_id = con.createQuery(sql,true)
+                    .bind(skill)
+                    .addParameter("id",id)
+                    .executeUpdate().getKey(Long.class);
         }
-        if(id != null){
+        if(final_id != null){
             skill.setId(final_id);
             return skill;
         }
@@ -63,7 +65,7 @@ public class SkillRepository {
     }
 
     public boolean deleteSkill(Long id){
-        String sql = "UPDATE skills SET delete = true WHERE id = :id and deleted= false";
+        String sql = "UPDATE skills SET deleted = true WHERE id = :id and deleted=false";
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
                     addParameter("id",id)
@@ -71,5 +73,4 @@ public class SkillRepository {
         }
         return (id!=null);
     }
-
 }
