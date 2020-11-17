@@ -1,7 +1,6 @@
 package grupo2.proyectoTBD.repositories;
 
 import grupo2.proyectoTBD.models.Ranking;
-import grupo2.proyectoTBD.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;

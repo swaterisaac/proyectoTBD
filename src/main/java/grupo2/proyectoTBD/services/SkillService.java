@@ -14,7 +14,7 @@ import java.util.List;
 @RequestMapping("/skill")
 public class SkillService {
 
-    private final SkillRepository SkillRepository;
+    private final grupo2.proyectoTBD.repositories.SkillRepository SkillRepository;
     private final Gson gson;
 
     SkillService(SkillRepository SkillRepository){
@@ -23,16 +23,18 @@ public class SkillService {
     }
 
     @GetMapping("/")
-    ResponseEntity<String> getSkills() {
-        List<Skill> skills = SkillRepository.getSkills();
+    ResponseEntity<String> getskills() {
+        List<Skill> skill = SkillRepository.getSkills();
         return new ResponseEntity<>(
-                gson.toJson(skills),
+                gson.toJson(skill),
                 HttpStatus.OK);
     }
+
 
     @PostMapping("/")
     ResponseEntity<String> newSkill(@RequestBody String request){
         Skill skill = gson.fromJson(request,Skill.class);
+        skill = SkillRepository.newSkill(skill);
         if(skill != null){
             return new ResponseEntity<>(
                     gson.toJson(skill),
@@ -70,6 +72,7 @@ public class SkillService {
             return new ResponseEntity<>(
                     HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(
+                HttpStatus.NOT_FOUND);
     }
 }
