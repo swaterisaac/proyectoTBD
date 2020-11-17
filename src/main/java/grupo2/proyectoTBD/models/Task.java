@@ -23,7 +23,7 @@ public class Task implements Serializable{
     private Date final_date;
     @SerializedName("created_at")
     private Timestamp created_at;
-    @SerializedName("delete")
+    @SerializedName("deleted")
     private Boolean deleted;
 
     //foraneas

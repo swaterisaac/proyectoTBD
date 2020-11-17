@@ -4,6 +4,9 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import grupo2.proyectoTBD.models.Task;
 import grupo2.proyectoTBD.repositories.TaskRepository;
+import org.apache.coyote.Response;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -21,40 +24,51 @@ public class TaskService {
     }
 
     @GetMapping("/{id}")
-    public String getTask(@PathVariable Long id){
+    ResponseEntity<String> getTask(@PathVariable Long id){
         Task task = TaskRepository.getTask(id);
-        return gson.toJson(task);
+        if (task!=null){
+            return new ResponseEntity<>(gson.toJson(task), HttpStatus.OK );
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/all")
-    public String getTasks(){
+    ResponseEntity<String> getTasks(){
         List<Task> tasks = TaskRepository.getTasks();
-        return gson.toJson(tasks);
+        if (tasks!=null){ //--->> Entrega null o una lista vacía????
+            return new ResponseEntity<>(gson.toJson(tasks), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     //CREATE
     @PostMapping("/new")
-    public String newTask(@RequestBody String taskRequest){
+    ResponseEntity<String> newTask(@RequestBody String taskRequest){
         Task task = gson.fromJson(taskRequest, Task.class);
-        return gson.toJson(TaskRepository.newTask(task));
+        if (task!=null) {
+            return new ResponseEntity<>(gson.toJson(TaskRepository.newTask(task)), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
 
     //UPDATE
     @PostMapping("/edit/{id}")
-    public String updateTask(@RequestBody String taskRequest, @PathVariable Long id) {
+    ResponseEntity<String> updateTask(@RequestBody String taskRequest, @PathVariable Long id) {
         Task taskRequested = gson.fromJson(taskRequest, Task.class);
-        Task currentTask = TaskRepository.getTask(id);
-        currentTask.setName(taskRequested.getName());
-        currentTask.setDescription(taskRequested.getDescription());
-        currentTask.setVolunteer_required(taskRequested.getVolunteer_required());
-        currentTask.setVolunteer_registered(taskRequested.getVolunteer_registered());
-        currentTask.setStart_date(taskRequested.getStart_date());
-        currentTask.setFinal_date(taskRequested.getFinal_date());
-        currentTask.setCreated_at(taskRequested.getCreated_at());
-        currentTask.setDeleted(taskRequested.getDeleted());
-        return gson.toJson(TaskRepository.editTask(currentTask));
+        if (taskRequested!=null){
+            return new ResponseEntity<>(gson.toJson(TaskRepository.editTask(taskRequested, id)), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
     }
 
+    @DeleteMapping("delete/{id}")
+    ResponseEntity<String> deleteTask(@PathVariable Long id) {
+        if(TaskRepository.deleteTask(id)){
+            return new ResponseEntity<>(HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
 
 }

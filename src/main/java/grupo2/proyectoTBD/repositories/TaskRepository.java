@@ -31,33 +31,34 @@ public class TaskRepository {
 
     public Task newTask(Task task){
         String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,:created_at, :id_status, :id_emergency)";
-        Long id = null;
+        Long id;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
                     bind(task).executeUpdate().getKey(Long.class);
         }
 
-        if(id != null){ //DUDA
+        if(id != null){ //
             task.setId(id);
             return task;
         }
-        return null;
+        return getTask(id);
     }
 
     //edita una tupla de task en la base de datos
-    public Task editTask(Task task){
+    public Task editTask(Task task, Long id){
         String updateSql = "UPDATE tasks SET name = :name, description = :description, volunteer_required = :volunteer_required, volunteer_registered = :volunteer_registered, start_date = :start_date, final_date = :final_date, created_at = :created_at WHERE id = :id";
         try(Connection con = sql2o.open())  {
-            con.createQuery(updateSql)
-                .addParameter("name",task.getName())
-                .addParameter("description",task.getDescription())
-                .addParameter("volunteer_required",task.getVolunteer_required())
-                .addParameter("volunteer_registered",task.getVolunteer_registered())
-                .addParameter("start_date",task.getStart_date())
-                .addParameter("final_date",task.getFinal_date())
-                .addParameter("created_at", task.getCreated_at())
-                .executeUpdate();
+            con.createQuery(updateSql).bind(task).addParameter("id", id).executeUpdate();
         }
-        return null;
+        return getTask(id);
+    }
+
+    public boolean deleteTask(Long id){
+        String updateSql = "UPDATE tasks SET deleted = true WHERE id = :id";
+        try(Connection con = sql2o.open()) {
+            con.createQuery(updateSql)
+                    .addParameter("id", id).executeUpdate();
+        }
+        return (id!=null);
     }
 }
