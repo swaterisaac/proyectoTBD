@@ -1,9 +1,12 @@
 package grupo2.proyectoTBD.services;
 
 
+import grupo2.proyectoTBD.models.Status;
 import grupo2.proyectoTBD.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -35,25 +38,39 @@ public class EmergencyService {
     }
 
     @GetMapping("/{id}")
-    public String getEmergency(@PathVariable Long id){
+    ResponseEntity<String> getEmergency(@PathVariable Long id){
         Emergency emergency = EmergencyRepository.getEmergency(id);
-        return gson.toJson(emergency);
+
+        if(emergency != null){
+            return new ResponseEntity<>(
+                    gson.toJson(emergency),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @GetMapping("/getall")
-    public String getEmergencies(){
+    ResponseEntity<String> getEmergencies() {
         List<Emergency> emergencies = EmergencyRepository.getEmergencies();
-        return gson.toJson(emergencies);
+        return new ResponseEntity<>(
+                gson.toJson(emergencies),
+                HttpStatus.OK);
     }
 
     @PostMapping("/new")
-    public String newEmergency(@RequestBody String request){
+    ResponseEntity<String> newEmergency(@RequestBody String request){
         Emergency emergency = gson.fromJson(request,Emergency.class);
-        return gson.toJson(EmergencyRepository.newEmergency(emergency));
+        emergency = EmergencyRepository.newEmergency(emergency);
+        if(emergency != null){
+            return new ResponseEntity<>(
+                    gson.toJson(emergency),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @PostMapping("/edit/{id}")
-    public String editEmergency(@RequestBody String request, @PathVariable Long id){
+    ResponseEntity<String> editEmergency(@RequestBody String request, @PathVariable Long id){
         Emergency emergency = gson.fromJson(request,Emergency.class);
         Emergency eme = EmergencyRepository.getEmergency(id);
 
@@ -85,6 +102,23 @@ public class EmergencyService {
             eme.setCreated_at(emergency.getCreated_at());
         }
 
-        return gson.toJson(EmergencyRepository.editEmergency(eme, id));
+        eme = EmergencyRepository.editEmergency(eme, id);
+
+        if(eme != null){
+            return new ResponseEntity<>(
+                    gson.toJson(eme),
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    ResponseEntity<String> deleteEmergency(@PathVariable Long id){
+        if(EmergencyRepository.deleteEmergency(id)){
+            return new ResponseEntity<>(
+                    HttpStatus.OK);
+        }
+        return new ResponseEntity<>(
+                HttpStatus.NOT_FOUND);
     }
 }

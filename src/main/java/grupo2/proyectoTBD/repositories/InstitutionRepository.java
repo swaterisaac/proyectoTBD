@@ -1,5 +1,6 @@
 package grupo2.proyectoTBD.repositories;
 
+import grupo2.proyectoTBD.models.Emergency;
 import grupo2.proyectoTBD.models.Institution;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -15,7 +16,7 @@ public class InstitutionRepository {
 
     public Institution getInstitution(Long id){
         String sql =
-                "SELECT *" + "FROM intitutions where id = :id and deleted = false";
+                "SELECT *" + "FROM institutions where id = :id and deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).addParameter("id",id).executeAndFetchFirst(Institution.class);
         }
@@ -34,7 +35,7 @@ public class InstitutionRepository {
         Long id = null;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
-                    addParameter("id_status",inst.getName())
+                    addParameter("name",inst.getName())
                     .executeUpdate().getKey(Long.class);
         }
 
@@ -43,5 +44,27 @@ public class InstitutionRepository {
             return inst;
         }
         return null;
+    }
+
+    public Institution editInstitution(Institution inst, Long id){
+        String sql = "UPDATE institutions " +
+                "SET name = :name " +
+                "WHERE id = :id";
+
+        try(Connection con = sql2o.open()) {
+            con.createQuery(sql, true).bind(inst).addParameter("id",id)
+                    .executeUpdate();
+            return getInstitution(id);
+        }
+    }
+
+    public boolean deleteInstitution(Long id){
+        String sql = "UPDATE institutions SET deleted = true WHERE id = :id and deleted=false";
+        try(Connection con = sql2o.open()) {
+            id = con.createQuery(sql,true).
+                    addParameter("id",id)
+                    .executeUpdate().getKey(Long.class);
+        }
+        return (id!=null);
     }
 }

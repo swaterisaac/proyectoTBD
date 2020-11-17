@@ -1,8 +1,11 @@
 package grupo2.proyectoTBD.models;
 
-import java.sql.Timestamp;
+//import java.sql.Timestamp;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
+
 public class Task implements Serializable{
     @SerializedName("id")
     private Long id;
@@ -12,14 +15,14 @@ public class Task implements Serializable{
     private String description;
     @SerializedName("volunteer_required")
     private Integer volunteer_required;
-    @SerializedName("volunteer_registred")
+    @SerializedName("volunteer_registered")
     private Integer volunteer_registered;
     @SerializedName("start_date")
-    private Timestamp start_date;
+    private Date start_date;
     @SerializedName("final_date")
-    private Timestamp final_date;
+    private Date final_date;
     @SerializedName("created_at")
-    private String created_at;
+    private Timestamp created_at;
     @SerializedName("delete")
     private Boolean deleted;
 
@@ -77,27 +80,27 @@ public class Task implements Serializable{
         this.volunteer_registered = volunteer_registered;
     }
 
-    public Timestamp getStart_date() {
+    public Date getStart_date() {
         return start_date;
     }
 
-    public void setStart_date(Timestamp start_date) {
+    public void setStart_date(Date start_date) {
         this.start_date = start_date;
     }
 
-    public Timestamp getFinal_date() {
+    public Date getFinal_date() {
         return final_date;
     }
 
-    public void setFinal_date(Timestamp final_date) {
+    public void setFinal_date(Date final_date) {
         this.final_date = final_date;
     }
 
-    public String getCreated_at() {
+    public Timestamp getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(String created_at) {
+    public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
     }
 
