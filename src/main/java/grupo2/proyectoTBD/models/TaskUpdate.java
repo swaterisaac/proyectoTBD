@@ -3,7 +3,8 @@ package grupo2.proyectoTBD.models;
 import java.sql.Timestamp;
 import com.google.gson.annotations.SerializedName;
 import java.io.Serializable;
-public class Task_update implements Serializable{
+
+public class TaskUpdate implements Serializable{
     @SerializedName("id")
     private Long id;
     @SerializedName("created_at")
@@ -16,13 +17,13 @@ public class Task_update implements Serializable{
     @SerializedName("deleted")
     private Boolean deleted;
 
-	public Boolean getDeleted() {
-		return this.deleted;
-	}
+    public Boolean getDeleted() {
+        return this.deleted;
+    }
 
-	public void setDeleted(Boolean deleted) {
-		this.deleted = deleted;
-	}
+    public void setDeleted(Boolean deleted) {
+        this.deleted = deleted;
+    }
 
     public Long getId() {
         return id;
