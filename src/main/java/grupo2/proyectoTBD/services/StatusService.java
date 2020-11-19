@@ -2,16 +2,20 @@ package grupo2.proyectoTBD.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonObject;
 import grupo2.proyectoTBD.models.Status;
 import grupo2.proyectoTBD.repositories.StatusRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import javax.validation.Valid;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/status")
+@Validated
 public class StatusService {
 
     private final StatusRepository StatusRepository;
@@ -32,8 +36,8 @@ public class StatusService {
 
 
     @PostMapping("/")
-    ResponseEntity<String> newStatus(@RequestBody String request){
-        Status status = gson.fromJson(request,Status.class);
+    ResponseEntity<String> newStatus(@Valid @RequestBody Status status){
+
         status = StatusRepository.newStatus(status);
         if(status != null){
             return new ResponseEntity<>(
@@ -55,8 +59,13 @@ public class StatusService {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<String> editStatus(@PathVariable Long id,@RequestBody String request){
-        Status status = gson.fromJson(request,Status.class);
+    ResponseEntity<String> editStatus(@PathVariable Long id,@RequestBody Status status_r){
+        Status status = StatusRepository.getStatus(id);
+        if(status_r.getDescription() != null){
+            status.setDescription(status_r.getDescription());
+        }
+
+
         status = StatusRepository.editStatus(id,status);
         if(status != null){
             return new ResponseEntity<>(
