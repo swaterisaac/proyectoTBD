@@ -54,6 +54,18 @@ public class SkillService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
+    //UPDATE
+    @PostMapping("/edit/{id}")
+    ResponseEntity<String> updateSkill(@RequestBody String skillRequest, @PathVariable Long id) {
+        Skill skillRequested = gson.fromJson(skillRequest, Skill.class);
+        if (skillRequested!=null){
+            return new ResponseEntity<>(gson.toJson(SkillRepository.editSkill(id,skillRequested)), HttpStatus.OK);
+        }
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+
+    }
+
     @PutMapping("/{id}")
     ResponseEntity<String> editSkill(@PathVariable Long id,@RequestBody String request){
         Skill skill = gson.fromJson(request,Skill.class);
