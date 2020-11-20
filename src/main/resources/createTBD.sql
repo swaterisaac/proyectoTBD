@@ -115,6 +115,7 @@ CREATE TABLE "users" (
   "password" varchar(26) NOT NULL,
   "last_name" varchar(100),
   "phone" varchar(10),
+  "age" integer NOT NULL,
   "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );
@@ -217,3 +218,21 @@ FOREIGN KEY ("id_user")
 REFERENCES users("id")
 ON DELETE CASCADE;
 
+
+CREATE FUNCTION public.volunteer_gt_age(IN entryage integer DEFAULT 200, IN emid bigint DEFAULT 1)
+    RETURNS bigint
+    LANGUAGE 'sql'
+
+AS $BODY$
+SELECT COUNT(*)
+FROM volunteers v,users u, emergencies e, status s, rankings r, tasks ta
+
+WHERE u.age >= entryage AND v.deleted = false
+AND e.id = emid AND e.id_status = s.id AND s.description = 'Activo'
+AND emid = ta.id_emergency
+AND ta.id = r.id_task AND r.id_volunteer = v.id
+AND v.id = u.id;
+$BODY$;
+
+ALTER FUNCTION public.volunteer_gt_age(integer, bigint)
+    OWNER TO tbd;

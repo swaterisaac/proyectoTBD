@@ -1,0 +1,42 @@
+
+--Versión antigua
+CREATE OR REPLACE FUNCTION public.volunteer_gt_age(IN entryage integer DEFAULT 200)
+    RETURNS bigint
+    LANGUAGE 'sql'
+    VOLATILE
+
+    COST 100
+AS $BODY$
+SELECT COUNT(*)
+FROM volunteers v
+INNER JOIN users u
+ON v.id = u.id
+WHERE u.age >= entryage AND v.deleted = false;
+$BODY$;
+
+
+--Versión nueva
+
+CREATE FUNCTION public.volunteer_gt_age(IN entryage integer DEFAULT 200, IN emid bigint DEFAULT 1)
+    RETURNS bigint
+    LANGUAGE 'sql'
+
+AS $BODY$
+SELECT COUNT(*)
+FROM volunteers v,users u, emergencies e, status s, rankings r, tasks ta
+
+WHERE u.age >= entryage AND v.deleted = false
+AND e.id = emid AND e.id_status = s.id AND s.description = 'Activo'
+AND emid = ta.id_emergency
+AND ta.id = r.id_task AND r.id_volunteer = v.id
+AND v.id = u.id;
+$BODY$;
+
+ALTER FUNCTION public.volunteer_gt_age(integer, bigint)
+    OWNER TO tbd;
+
+
+
+
+
+

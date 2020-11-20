@@ -1,6 +1,8 @@
 package grupo2.proyectoTBD.models;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 public class User implements Serializable{
@@ -18,12 +20,22 @@ public class User implements Serializable{
 	@SerializedName("last_name")
     private String last_name;
 	@SerializedName("phone")
-	private String phone; 
+	private String phone;
+	@SerializedName("age")
+	private int age;
 	@SerializedName("deleted")
 	private Boolean deleted;
 
 	public Boolean getDeleted() {
 		return this.deleted;
+	}
+
+	public int getAge() {
+		return age;
+	}
+
+	public void setAge(int age) {
+		this.age = age;
 	}
 
 	public void setDeleted(Boolean deleted) {
