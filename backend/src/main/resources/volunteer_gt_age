@@ -38,5 +38,14 @@ ALTER FUNCTION public.volunteer_gt_age(integer, bigint)
 
 
 
+--consulta
+SELECT COUNT(*)
+FROM volunteers v,users u, emergencies e, status s, rankings r, tasks ta
+
+WHERE u.age >= entryage AND v.deleted = false
+AND e.id = emid AND e.id_status = s.id AND s.description = 'Activo' --La emergencia e.id_status puede ser directamente = 1 ya que ese es fijo 'activo'
+AND emid = ta.id_emergency
+AND ta.id = r.id_task AND r.id_volunteer = v.id
+AND v.id = u.id;
 
 
