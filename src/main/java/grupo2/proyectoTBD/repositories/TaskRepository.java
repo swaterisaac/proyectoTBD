@@ -30,7 +30,7 @@ public class TaskRepository {
     }
 
     public Task newTask(Task task){
-        String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,:created_at, :id_status, :id_emergency)";
+        String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,NOW(),:id_status, :id_emergency)";
         Long id;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
