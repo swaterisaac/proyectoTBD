@@ -22,16 +22,24 @@
       <v-card-text class="text--primary">
         <div>{{tarea.name}}</div>
       </v-card-text>
-
       <v-container id="dropdown-example-3" fluid style = "width: 80%">
         <v-overflow-btn
           class="my-2"
           :items="dropdown_font"
-          label="Actualizar el estado de la tarea"
-          target="#dropdown-example-1" 
+          :label="statusActual"
+          target="#dropdown-example-1"
         ></v-overflow-btn>
       </v-container>
 
+      <v-container>
+        <span>Seleccionado: {{ selected }}</span>
+        <select v-model="selected">
+          <option v-for="stat in statuses" :key="stat.id" v-bind:value="stat.id">
+            {{ stat.description }}
+          </option>
+        </select>
+        
+      </v-container>
       <v-card-actions>
         <v-btn
           color="orange"
@@ -50,19 +58,32 @@
   export default {
     data: () => ({
       //idTarea = null,
-      dropdown_font: ['Creada', 'Iniciada', 'Cancelada', 'Finalizada'],
+      dropdown_font: [],
       tarea: [],
-      status:[]
+      status:[],
+      statuses:[],
+      selected:'',
+      statusActual: '',
+      variable: ''
     }),
 
-    created(){ axios.get('http://localhost:1818/task/' + this.$route.params.id).then(response=>{
+    created(){ 
+      axios.get('http://localhost:1818/task/' + this.$route.params.id).then(response=>{
       this.tarea = response.data;
-      console.log(typeof[this.tarea.id_status]);
-    }),
-    axios.get('http://localhost:1818/status/edit/1').then(response=>{
+      this.variable = JSON.stringify(this.tarea.id_status);
+      console.log(this.variable);
+      console.log(this.tarea.id_status);
+      axios.get('http://localhost:1818/status/' + this.variable).then(response=>{
       this.status = response.data;
-      console.log(this.status);
+      this.statusActual = this.status.description;
+      
     })
+    }),
+    axios.get('http://localhost:1818/status/').then(response=>{
+      this.statuses = response.data;
+      console.log(this.statuses);
+    })
+    
     }
 
   }
