@@ -15,7 +15,7 @@ public class TaskRepository {
 
     public Task getTask(Long id){
         String sql =
-                "SELECT *" + "FROM tasks where id = :id and deleted = false";
+                "SELECT * FROM tasks where id = :id and deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).addParameter("id",id).executeAndFetchFirst(Task.class);
         }
@@ -23,7 +23,7 @@ public class TaskRepository {
 
     public List<Task> getTasks(){
         String sql =
-                "SELECT *" + "FROM tasks where deleted = false";
+                "SELECT * FROM tasks where deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).executeAndFetch(Task.class);
         }

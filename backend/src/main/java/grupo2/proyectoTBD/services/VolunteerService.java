@@ -3,6 +3,7 @@ package grupo2.proyectoTBD.services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import grupo2.proyectoTBD.models.Volunteer;
+import grupo2.proyectoTBD.repositories.UserRepository;
 import grupo2.proyectoTBD.repositories.VolunteerRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,10 +16,12 @@ import java.util.List;
 public class VolunteerService {
 
     private final grupo2.proyectoTBD.repositories.VolunteerRepository VolunteerRepository;
+    private final grupo2.proyectoTBD.repositories.UserRepository UserRepository;
     private final Gson gson;
 
-    VolunteerService(VolunteerRepository VolunteerRepository){
+    VolunteerService(VolunteerRepository VolunteerRepository, UserRepository UserRepository){
         this.VolunteerRepository = VolunteerRepository;
+        this.UserRepository = UserRepository;
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
@@ -34,11 +37,16 @@ public class VolunteerService {
     @PostMapping("/")
     ResponseEntity<String> newVolunteer(@RequestBody String request){
         Volunteer volunteer = gson.fromJson(request,Volunteer.class);
-        volunteer = VolunteerRepository.newVolunteer(volunteer);
         if(volunteer != null){
-            return new ResponseEntity<>(
-                    gson.toJson(volunteer),
-                    HttpStatus.OK);
+            if(volunteer.getId_user() != null) {
+                if (UserRepository.getUser(volunteer.getId_user()) == null) {
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                volunteer = VolunteerRepository.newVolunteer(volunteer);
+                return new ResponseEntity<>(
+                        gson.toJson(volunteer),
+                        HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -57,13 +65,18 @@ public class VolunteerService {
     @PutMapping("/{id}")
     ResponseEntity<String> editVolunteer(@PathVariable Long id,@RequestBody String request){
         Volunteer volunteer = gson.fromJson(request,Volunteer.class);
-        volunteer = VolunteerRepository.editVolunteer(id,volunteer);
         if(volunteer != null){
-            return new ResponseEntity<>(
-                    gson.toJson(volunteer),
-                    HttpStatus.OK);
+            if(volunteer.getId_user() != null){
+                if(UserRepository.getUser(volunteer.getId_user()) == null){
+                    return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+                }
+                volunteer = VolunteerRepository.editVolunteer(id,volunteer);
+                return new ResponseEntity<>(
+                        gson.toJson(volunteer),
+                        HttpStatus.OK);
+            }
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")

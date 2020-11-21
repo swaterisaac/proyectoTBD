@@ -22,7 +22,7 @@ public class User implements Serializable{
 	@SerializedName("phone")
 	private String phone;
 	@SerializedName("age")
-	private int age;
+	private Integer age;
 	@SerializedName("deleted")
 	private Boolean deleted;
 
@@ -30,11 +30,11 @@ public class User implements Serializable{
 		return this.deleted;
 	}
 
-	public int getAge() {
+	public Integer getAge() {
 		return age;
 	}
 
-	public void setAge(int age) {
+	public void setAge(Integer age) {
 		this.age = age;
 	}
 
