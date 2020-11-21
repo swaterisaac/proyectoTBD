@@ -1,6 +1,7 @@
 package grupo2.proyectoTBD.repositories;
 
 import grupo2.proyectoTBD.models.Emergency;
+import grupo2.proyectoTBD.models.Skill;
 import grupo2.proyectoTBD.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -48,6 +49,38 @@ public class UserRepository {
             return user;
         }
         return null;
+    }
+    public User editUser(Long id, User user){
+        String sql = "UPDATE users SET " +
+                "rut = :rut, " +
+                "first_name = :first_name, " +
+                "email = :email, " +
+                "password = :password, " +
+                "last_name = :last_name, " +
+                "phone = :phone " +
+                "WHERE id = :id and deleted = false";
+        Long final_id = null;
+        try(Connection con = sql2o.open()) {
+            final_id = con.createQuery(sql,true)
+                    .bind(user)
+                    .addParameter("id",id)
+                    .executeUpdate().getKey(Long.class);
+        }
+        if(final_id != null){
+            user.setId(final_id);
+            return user;
+        }
+        return null;
+    }
+
+    public boolean deleteUser(Long id){
+        String sql = "UPDATE users SET deleted = true WHERE id = :id and deleted=false";
+        try(Connection con = sql2o.open()) {
+            id = con.createQuery(sql,true).
+                    addParameter("id",id)
+                    .executeUpdate().getKey(Long.class);
+        }
+        return (id!=null);
     }
 
 

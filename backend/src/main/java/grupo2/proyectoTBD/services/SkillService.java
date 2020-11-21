@@ -2,6 +2,7 @@ package grupo2.proyectoTBD.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import grupo2.proyectoTBD.models.Emergency_Skill;
 import grupo2.proyectoTBD.models.Skill;
 import grupo2.proyectoTBD.repositories.SkillRepository;
 import org.springframework.http.HttpStatus;
@@ -34,11 +35,14 @@ public class SkillService {
     @PostMapping("/")
     ResponseEntity<String> newSkill(@RequestBody String request){
         Skill skill = gson.fromJson(request,Skill.class);
-        skill = SkillRepository.newSkill(skill);
+
         if(skill != null){
-            return new ResponseEntity<>(
-                    gson.toJson(skill),
-                    HttpStatus.OK);
+            if(skill.getName() != null && skill.getDescription() != null) {
+                skill = SkillRepository.newSkill(skill);
+                return new ResponseEntity<>(
+                        gson.toJson(skill),
+                        HttpStatus.OK);
+            }
         }
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
@@ -54,23 +58,19 @@ public class SkillService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-
-    //UPDATE
-    @PostMapping("/edit/{id}")
-    ResponseEntity<String> updateSkill(@RequestBody String skillRequest, @PathVariable Long id) {
-        Skill skillRequested = gson.fromJson(skillRequest, Skill.class);
-        if (skillRequested!=null){
-            return new ResponseEntity<>(gson.toJson(SkillRepository.editSkill(id,skillRequested)), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-    }
-
     @PutMapping("/{id}")
-    ResponseEntity<String> editSkill(@PathVariable Long id,@RequestBody String request){
-        Skill skill = gson.fromJson(request,Skill.class);
-        skill = SkillRepository.editSkill(id,skill);
-        if(skill != null){
+    ResponseEntity<String> editSkill(@PathVariable Long id,@RequestBody Skill request){
+        Skill skill = SkillRepository.getSkill(id);
+
+        if(request != null && skill != null){
+            if(request.getName() != null){
+                skill.setName(request.getName());
+            }
+            if(request.getDescription() != null){
+                skill.setDescription(request.getDescription());
+            }
+
+            skill = SkillRepository.editSkill(id,skill);
             return new ResponseEntity<>(
                     gson.toJson(skill),
                     HttpStatus.OK);
