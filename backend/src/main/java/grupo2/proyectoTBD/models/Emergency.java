@@ -4,7 +4,10 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import grupo2.proyectoTBD.repositories.TaskRepository;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Emergency implements Serializable {
     @SerializedName("id")
@@ -25,6 +28,10 @@ public class Emergency implements Serializable {
     private Timestamp created_at;
     @SerializedName("deleted")
     private Boolean deleted;
+
+    public List<Task> getTasks(){
+        return new TaskRepository().getEmergencyTasks(this.id);
+    }
 
 	public Boolean getDeleted() {
 		return this.deleted;

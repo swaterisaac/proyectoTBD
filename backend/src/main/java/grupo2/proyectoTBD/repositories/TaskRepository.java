@@ -61,4 +61,14 @@ public class TaskRepository {
         }
         return (id!=null);
     }
+
+    public List<Task> getEmergencyTasks(Long emergency_id){
+        String sql =
+                "SELECT *" + "FROM tasks where deleted = false and emergency_id = :emergency_id";
+        try(Connection con = sql2o.open()) {
+            return con.createQuery(sql).
+                    addParameter("emergency_id",emergency_id)
+                    .executeAndFetch(Task.class);
+        }
+    }
 }

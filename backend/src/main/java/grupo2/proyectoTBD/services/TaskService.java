@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -32,7 +33,7 @@ public class TaskService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/all")
+    @GetMapping("/")
     ResponseEntity<String> getTasks(){
         List<Task> tasks = TaskRepository.getTasks();
         if (tasks!=null){ //--->> Entrega null o una lista vacía????
@@ -42,9 +43,8 @@ public class TaskService {
     }
 
     //CREATE
-    @PostMapping("/new")
-    ResponseEntity<String> newTask(@RequestBody String taskRequest){
-        Task task = gson.fromJson(taskRequest, Task.class);
+    @PostMapping("/")
+    ResponseEntity<String> newTask(@Valid @RequestBody Task task){
         if (task!=null) {
             return new ResponseEntity<>(gson.toJson(TaskRepository.newTask(task)), HttpStatus.OK);
         }
@@ -53,17 +53,16 @@ public class TaskService {
 
 
     //UPDATE
-    @PostMapping("/edit/{id}")
-    ResponseEntity<String> updateTask(@RequestBody String taskRequest, @PathVariable Long id) {
-        Task taskRequested = gson.fromJson(taskRequest, Task.class);
-        if (taskRequested!=null){
-            return new ResponseEntity<>(gson.toJson(TaskRepository.editTask(taskRequested, id)), HttpStatus.OK);
+    @PutMapping("/{id}")
+    ResponseEntity<String> updateTask(@Valid @RequestBody Task task , @PathVariable Long id) {
+        if (task!=null){
+            return new ResponseEntity<>(gson.toJson(TaskRepository.editTask(task, id)), HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 
     }
 
-    @DeleteMapping("delete/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<String> deleteTask(@PathVariable Long id) {
         if(TaskRepository.deleteTask(id)){
             return new ResponseEntity<>(HttpStatus.OK);
