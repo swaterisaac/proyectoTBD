@@ -29,25 +29,24 @@ public class ConsultService {
 
     @GetMapping({"","/"})
     public ResponseEntity<String> consult(@RequestBody String request){
-        //Falta verificación
         JsonObject jo = gson.fromJson(request, JsonObject.class);
-        int age = jo.get("emid").getAsInt();
-        Long emid = jo.get("age").getAsLong();
-    /*
-        System.out.println("----------------------------------");
-        System.out.println(emid);
-        System.out.println(age);
-        System.out.println("----------------------------------");
-    */
-
-        List<Consult> jr = consultRepository.consult(jo);
-        if(jr != null){
+        try {
+            jo.get("emid").getAsLong();
+            jo.get("age").getAsInt();
+            List<Consult> jr = consultRepository.consult(jo);
+            if(!jr.isEmpty()) {
+                return new ResponseEntity<>(
+                        gson.toJson(jr),
+                        HttpStatus.OK);
+            }
             return new ResponseEntity<>(
-                    gson.toJson(jr),
-                    HttpStatus.OK);
+                    HttpStatus.BAD_REQUEST
+            );
         }
-        return new ResponseEntity<>(
-            HttpStatus.BAD_REQUEST
-        );
+        catch(Exception e) {
+            return new ResponseEntity<>(
+                    HttpStatus.BAD_REQUEST
+            );
+        }
     }
 }
