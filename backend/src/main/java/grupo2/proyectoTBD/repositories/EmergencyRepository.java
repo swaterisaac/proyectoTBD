@@ -40,7 +40,7 @@ public class EmergencyRepository{
     }
 
     public Emergency newEmergency(Emergency emergency){
-        String sql = "INSERT INTO emergencies(id_status, name, description, start_date, final_date, id_institution, created_at) values (:id_status, :name, :description, :start_date, :final_date, :id_institution, :created_at)";
+        String sql = "INSERT INTO emergencies(id_status, name, description, start_date, final_date, id_institution, created_at) values (:id_status, :name, :description, :start_date, :final_date, :id_institution, NOW())";
         Long id = null;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
@@ -50,7 +50,7 @@ public class EmergencyRepository{
                     .addParameter("start_date",emergency.getStart_date())
                     .addParameter("final_date",emergency.getFinal_date())
                     .addParameter("id_institution",emergency.getId_institution())
-                    .addParameter("created_at",emergency.getCreated_at()).executeUpdate().getKey(Long.class);
+                    .executeUpdate().getKey(Long.class);
         }
 
         if(id != null){

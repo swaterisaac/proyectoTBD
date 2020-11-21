@@ -27,7 +27,7 @@ public class    StatusService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     ResponseEntity<String> getStatuses() {
         List<Status> status = StatusRepository.getStatuses();
         return new ResponseEntity<>(
@@ -36,7 +36,7 @@ public class    StatusService {
     }
 
 
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newStatus(@Valid @RequestBody Status status){
 
         status = StatusRepository.newStatus(status);
