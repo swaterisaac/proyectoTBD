@@ -3,6 +3,7 @@ package grupo2.proyectoTBD.services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import grupo2.proyectoTBD.models.Consult;
 import grupo2.proyectoTBD.models.Ranking;
 import grupo2.proyectoTBD.repositories.ConsultRepository;
@@ -14,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -28,25 +30,30 @@ public class ConsultService {
     }
 
     @GetMapping({"","/"})
-    public ResponseEntity<String> consult(@RequestBody String request){
-        JsonObject jo = gson.fromJson(request, JsonObject.class);
-        try {
-            jo.get("emid").getAsLong();
-            jo.get("age").getAsInt();
-            List<Consult> jr = consultRepository.consult(jo);
-            if(!jr.isEmpty()) {
-                return new ResponseEntity<>(
-                        gson.toJson(jr),
-                        HttpStatus.OK);
-            }
-            return new ResponseEntity<>(
-                    HttpStatus.BAD_REQUEST
-            );
-        }
-        catch(Exception e) {
-            return new ResponseEntity<>(
-                    HttpStatus.BAD_REQUEST
-            );
-        }
+    public ResponseEntity<String> consult(@RequestBody JsonObject request){
+        List<Map<String, Object>> list = consultRepository.consult(request.get("age").getAsInt(),request.get("emid").getAsLong());
+        String out  = new Gson().toJson(list,new TypeToken<List<Map<String, Object>>>() {
+        }.getType());
+        return new ResponseEntity<>(
+                out,
+                HttpStatus.OK);
+//        try {
+//            jo.get("emid").getAsLong();
+//            jo.get("age").getAsInt();
+//            JsonObject jr = consultRepository.consult(jo);
+//            if(jr != null) {
+//                return new ResponseEntity<>(
+//                        gson.toJson(jr),
+//                        HttpStatus.OK);
+//            }
+//            return new ResponseEntity<>(
+//                    HttpStatus.BAD_REQUEST
+//            );
+//        }
+//        catch(Exception e) {
+//            return new ResponseEntity<>(
+//                    HttpStatus.BAD_REQUEST
+//            );
+//        }
     }
 }
