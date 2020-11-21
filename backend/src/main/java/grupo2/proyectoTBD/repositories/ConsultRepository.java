@@ -26,19 +26,21 @@ public class ConsultRepository {
 
         String sql = "SELECT COUNT(*), ta.name\n" +
                 "FROM volunteers v,users u, emergencies e, status s, rankings r, tasks ta\n" +
-                "WHERE u.age >= :age AND v.deleted = false\n" +
-                "AND e.id = :emid AND e.id_status = s.id AND s.description = 'Activo'\n" +
-                "AND :emid = ta.id_emergency\n" +
-                "AND ta.id = r.id_task AND r.id_volunteer = v.id\n" +
-                "AND v.id = u.id\n" +
+                "WHERE u.age >= :age AND e.id = :emid\n" +
+                "AND e.id_status = s.id AND s.id = 1 " +
+                "AND :emid = ta.id_emergency AND ta.id = r.id_task\n" +
+                "AND r.id_volunteer = v.id AND v.id = u.id\n" +
+                "AND v.deleted = false AND u.deleted = false\n" +
+                "AND e.deleted = false AND s.deleted = false\n" +
+                "AND r.deleted = false AND ta.deleted = false\n" +
                 "GROUP BY  ta.name ORDER BY ta.name ASC;\n";
         try(Connection con = sql2o.open()) {
-            List<Consult> ola =  con.createQuery(sql)
+            return   con.createQuery(sql)
                     .addParameter("emid", emid)
                     .addParameter("emid", emid)
                     .addParameter("age", age)
                     .executeAndFetch(Consult.class);
-            return ola;
+
         }
     }
 
