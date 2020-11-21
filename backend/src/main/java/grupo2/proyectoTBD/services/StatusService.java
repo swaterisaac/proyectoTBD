@@ -16,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/status")
 @Validated
+@CrossOrigin(origins = "*")
 public class StatusService {
 
     private final StatusRepository StatusRepository;
@@ -47,7 +48,7 @@ public class StatusService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/edit/{id}")
     ResponseEntity<String> getStatus(@PathVariable Long id){
         Status status = StatusRepository.getStatus(id);
         if(status != null){

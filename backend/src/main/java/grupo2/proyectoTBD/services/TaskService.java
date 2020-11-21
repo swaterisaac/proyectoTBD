@@ -13,6 +13,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/task")
+@CrossOrigin(origins = "*")
 public class TaskService {
 
     private final TaskRepository TaskRepository;
