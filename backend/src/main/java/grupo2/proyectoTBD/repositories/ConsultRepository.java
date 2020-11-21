@@ -21,17 +21,24 @@ public class ConsultRepository {
     }
 */
     public List<Consult> consult(JsonObject request){
+        int age = request.get("age").getAsInt();
+        Long emid = request.get("emid").getAsLong();
+
         String sql = "SELECT COUNT(*), ta.name\n" +
                 "FROM volunteers v,users u, emergencies e, status s, rankings r, tasks ta\n" +
-                "WHERE u.age >= 15 AND v.deleted = false\n" +
-                "AND e.id = 1 AND e.id_status = s.id AND s.description = 'Activo'\n" +
-                "AND 1 = ta.id_emergency\n" +
+                "WHERE u.age >= :age AND v.deleted = false\n" +
+                "AND e.id = :emid AND e.id_status = s.id AND s.description = 'Activo'\n" +
+                "AND :emid = ta.id_emergency\n" +
                 "AND ta.id = r.id_task AND r.id_volunteer = v.id\n" +
                 "AND v.id = u.id\n" +
                 "GROUP BY  ta.name ORDER BY ta.name ASC;\n";
-
         try(Connection con = sql2o.open()) {
-            return con.createQuery(sql).executeAndFetch(Consult.class);
+            List<Consult> ola =  con.createQuery(sql)
+                    .addParameter("emid", emid)
+                    .addParameter("emid", emid)
+                    .addParameter("age", age)
+                    .executeAndFetch(Consult.class);
+            return ola;
         }
     }
 

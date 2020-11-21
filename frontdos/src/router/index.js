@@ -22,6 +22,12 @@ const routes = [
     path: '/tarea',
     name: 'tarea',
     component: () => import(/* webpackChunkName: "about" */ '../views/Tarea.vue')
+  },
+  
+  {
+    path: '/tarea/:id',
+    name: 'tarea id',
+    component: () => import(/* webpackChunkName: "about" */ '../views/Tarea.vue')
   }
 ]
 

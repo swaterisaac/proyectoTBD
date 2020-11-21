@@ -16,7 +16,8 @@ import java.util.List;
 @RestController
 @RequestMapping("/status")
 @Validated
-public class StatusService {
+@CrossOrigin(origins = "*")
+public class    StatusService {
 
     private final StatusRepository StatusRepository;
     private final Gson gson;
@@ -26,7 +27,7 @@ public class StatusService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     ResponseEntity<String> getStatuses() {
         List<Status> status = StatusRepository.getStatuses();
         return new ResponseEntity<>(
@@ -35,7 +36,7 @@ public class StatusService {
     }
 
 
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newStatus(@Valid @RequestBody Status status){
 
         status = StatusRepository.newStatus(status);
