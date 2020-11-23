@@ -53,8 +53,12 @@
     }),
 
     methods:{
-      editStatus: function(){axios.post('http://localhost:1818/task/edit/'+ this.tarea.id, {id_status: 1})},
-    },
+      editStatus: function(){
+        axios.put('http://localhost:1818/task/'+ this.tarea.id, { id_status : this.selected })
+        console.log(this.selected)
+      },
+      
+   },
 
     created(){ 
       axios.get('http://localhost:1818/task/' + this.$route.params.id).then(response=>{

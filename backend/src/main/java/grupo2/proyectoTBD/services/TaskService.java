@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/task")
 @CrossOrigin(origins = "*")
-public class TaskService {
+public class    TaskService {
 
     private final TaskRepository TaskRepository;
     private final EmergencyRepository EmergencyRepository;
