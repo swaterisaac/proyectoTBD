@@ -13,13 +13,13 @@ public class Emergency implements Serializable {
     @SerializedName("id")
     private Long id;
     @SerializedName("id_status")
-    private Long id_status;  //No se si esta bien poner ese tipo de dato en las fk
+    private Long id_status;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
     private String description;
     @SerializedName("start_date")
-    private Date start_date; //No se que tipo de dato es date.
+    private Date start_date;
     @SerializedName("final_date")
     private Date final_date;
     @SerializedName("id_institution")

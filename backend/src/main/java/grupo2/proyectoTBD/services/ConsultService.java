@@ -5,6 +5,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 import grupo2.proyectoTBD.models.Consult;
+import grupo2.proyectoTBD.models.Emergency;
 import grupo2.proyectoTBD.models.Ranking;
 import grupo2.proyectoTBD.repositories.ConsultRepository;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -29,31 +30,40 @@ public class ConsultService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
+
     @GetMapping({"","/"})
-    public ResponseEntity<String> consult(@RequestBody JsonObject request){
-        List<Map<String, Object>> list = consultRepository.consult(request.get("age").getAsInt(),request.get("emid").getAsLong());
+    public ResponseEntity<String> consult(@RequestBody String request){
+        JsonObject jo = gson.fromJson(request, JsonObject.class);
+        try {
+            jo.get("emid").getAsLong();
+            jo.get("age").getAsInt();
+            List<Consult> jr = consultRepository.consult(jo);
+            if(!jr.isEmpty()) {
+                return new ResponseEntity<>(
+                        gson.toJson(jr),
+                        HttpStatus.OK);
+            }
+            return new ResponseEntity<>(
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+        catch(Exception e) {
+            return new ResponseEntity<>(
+                    HttpStatus.BAD_REQUEST
+            );
+        }
+    }
+/*
+    @GetMapping({"","/"})
+    public ResponseEntity<String> consult(@RequestBody String request){
+       List<Map<String, Object>> list = consultRepository.consult(request.get("age").getAsInt(),request.get("emid").getAsLong());
         String out  = new Gson().toJson(list,new TypeToken<List<Map<String, Object>>>() {
         }.getType());
         return new ResponseEntity<>(
                 out,
                 HttpStatus.OK);
-//        try {
-//            jo.get("emid").getAsLong();
-//            jo.get("age").getAsInt();
-//            JsonObject jr = consultRepository.consult(jo);
-//            if(jr != null) {
-//                return new ResponseEntity<>(
-//                        gson.toJson(jr),
-//                        HttpStatus.OK);
-//            }
-//            return new ResponseEntity<>(
-//                    HttpStatus.BAD_REQUEST
-//            );
-//        }
-//        catch(Exception e) {
-//            return new ResponseEntity<>(
-//                    HttpStatus.BAD_REQUEST
-//            );
-//        }
-    }
+        JsonObject jo = gson.fromJson(request, JsonObject.class);
+
+ */
+
 }
