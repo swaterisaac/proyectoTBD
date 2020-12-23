@@ -29,9 +29,9 @@ public class Emergency implements Serializable {
     @SerializedName("deleted")
     private Boolean deleted;
     @SerializedName("longitude")
-    private double longitude;
+    private Double longitude;
     @SerializedName("latitude")
-    private double latitude;
+    private Double latitude;
 
     public List<Task> getTasks(){
         return new TaskRepository().getEmergencyTasks(this.id);
@@ -127,5 +127,4 @@ public class Emergency implements Serializable {
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
     }
-
 }

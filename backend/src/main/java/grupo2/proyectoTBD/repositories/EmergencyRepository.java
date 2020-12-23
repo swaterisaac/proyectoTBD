@@ -40,7 +40,7 @@ public class EmergencyRepository{
     }
 
     public Emergency newEmergency(Emergency emergency){
-        String sql = "INSERT INTO emergencies(id_status, name, description, start_date, final_date, id_institution, created_at) values (:id_status, :name, :description, :start_date, :final_date, :id_institution, NOW())";
+        String sql = "INSERT INTO emergencies(id_status, name, description, start_date, final_date, id_institution, created_at, longitude, latitude) values (:id_status, :name, :description, :start_date, :final_date, :id_institution, NOW(), :longitude, :latitude)";
         Long id = null;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
@@ -50,6 +50,8 @@ public class EmergencyRepository{
                     .addParameter("start_date",emergency.getStart_date())
                     .addParameter("final_date",emergency.getFinal_date())
                     .addParameter("id_institution",emergency.getId_institution())
+                    .addParameter("longitude", emergency.getLongitude())
+                    .addParameter("latitude", emergency.getLatitude())
                     .executeUpdate().getKey(Long.class);
         }
 
@@ -62,7 +64,7 @@ public class EmergencyRepository{
 
     public Emergency editEmergency(Emergency emergency, Long id){
         String sql = "UPDATE emergencies " +
-                "SET id_status = :id_status, name = :name, description = :description, start_date = :start_date, final_date = :final_date, id_institution = :id_institution, created_at = :created_at, deleted = :deleted " +
+                "SET id_status = :id_status, name = :name, description = :description, start_date = :start_date, final_date = :final_date, id_institution = :id_institution, created_at = :created_at, deleted = :deleted, longitude = :longitude, latitude = :latitude" +
                 "WHERE id = :id";
 
         try(Connection con = sql2o.open()) {
