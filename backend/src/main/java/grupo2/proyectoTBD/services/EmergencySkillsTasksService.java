@@ -22,7 +22,7 @@ public class EmergencySkillsTasksService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     ResponseEntity<String> getEmeSkiTas() {
         List<Emergency_Skills_Tasks> emerskilltask = EmergencySkillsTasksRepository.getEmeSkiTasks();
         return new ResponseEntity<>(
@@ -31,7 +31,7 @@ public class EmergencySkillsTasksService {
     }
 
 
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newEmeSkiTasks(@RequestBody String request){
         Emergency_Skills_Tasks emerskilltask = gson.fromJson(request,Emergency_Skills_Tasks.class);
         emerskilltask = EmergencySkillsTasksRepository.newEmeSkiTas(emerskilltask);
@@ -54,21 +54,9 @@ public class EmergencySkillsTasksService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    //UPDATE
-    @PostMapping("/edit/{id}")
-    ResponseEntity<String> updateEST(@RequestBody String ESTRequest, @PathVariable Long id) {
-        Emergency_Skills_Tasks ESTRequested = gson.fromJson(ESTRequest, Emergency_Skills_Tasks.class);
-        if (ESTRequested!=null){
-            return new ResponseEntity<>(gson.toJson(EmergencySkillsTasksRepository.editEmeSkiTas(id,ESTRequested)), HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-
-    }
-
-
     @PutMapping("/{id}")
-    ResponseEntity<String> editEmeSkiTas(@PathVariable Long id,@RequestBody String request){
-        Emergency_Skills_Tasks emerskilltask = gson.fromJson(request,Emergency_Skills_Tasks.class);
+    ResponseEntity<String> editEmeSkiTas(@PathVariable Long id,@RequestBody Emergency_Skills_Tasks request){
+        Emergency_Skills_Tasks emerskilltask = EmergencySkillsTasksRepository.getEmeSkiTas(id);
         emerskilltask = EmergencySkillsTasksRepository.editEmeSkiTas(id,emerskilltask);
         if(emerskilltask != null){
             return new ResponseEntity<>(

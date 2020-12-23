@@ -27,7 +27,7 @@ public class    StatusService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     ResponseEntity<String> getStatuses() {
         List<Status> status = StatusRepository.getStatuses();
         return new ResponseEntity<>(
@@ -36,7 +36,7 @@ public class    StatusService {
     }
 
 
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newStatus(@Valid @RequestBody Status status){
 
         status = StatusRepository.newStatus(status);
@@ -62,18 +62,18 @@ public class    StatusService {
     @PutMapping("/{id}")
     ResponseEntity<String> editStatus(@PathVariable Long id,@RequestBody Status status_r){
         Status status = StatusRepository.getStatus(id);
-        if(status_r.getDescription() != null){
+        if(status != null && status_r.getDescription() != null){
             status.setDescription(status_r.getDescription());
+        }else{
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-
-
         status = StatusRepository.editStatus(id,status);
         if(status != null){
             return new ResponseEntity<>(
                     gson.toJson(status),
                     HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")

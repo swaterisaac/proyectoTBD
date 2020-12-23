@@ -15,7 +15,7 @@ public class TaskRepository {
 
     public Task getTask(Long id){
         String sql =
-                "SELECT *" + "FROM tasks where id = :id and deleted = false";
+                "SELECT * FROM tasks where id = :id and deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).addParameter("id",id).executeAndFetchFirst(Task.class);
         }
@@ -23,14 +23,14 @@ public class TaskRepository {
 
     public List<Task> getTasks(){
         String sql =
-                "SELECT *" + "FROM tasks where deleted = false";
+                "SELECT * FROM tasks where deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).executeAndFetch(Task.class);
         }
     }
 
     public Task newTask(Task task){
-        String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,NOW(),:id_status, :id_emergency)";
+        String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, longitude, latitude, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,NOW(),:longitude,:latitude,:id_status, :id_emergency)";
         Long id;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
@@ -46,7 +46,7 @@ public class TaskRepository {
 
     //edita una tupla de task en la base de datos
     public Task editTask(Task task, Long id){
-        String updateSql = "UPDATE tasks SET name = :name, description = :description, volunteer_required = :volunteer_required, volunteer_registered = :volunteer_registered, start_date = :start_date, final_date = :final_date, created_at = :created_at WHERE id = :id";
+        String updateSql = "UPDATE tasks SET name = :name, description = :description, volunteer_required = :volunteer_required, volunteer_registered = :volunteer_registered, start_date = :start_date, final_date = :final_date, created_at = :created_at, longitude = :longitude, latitude = :latitude, id_status = :id_status, id_emergency = :id_emergency WHERE id = :id";
         try(Connection con = sql2o.open())  {
             con.createQuery(updateSql).bind(task).addParameter("id", id).executeUpdate();
         }
@@ -60,5 +60,15 @@ public class TaskRepository {
                     .addParameter("id", id).executeUpdate();
         }
         return (id!=null);
+    }
+
+    public List<Task> getEmergencyTasks(Long emergency_id){
+        String sql =
+                "SELECT *" + "FROM tasks where deleted = false and emergency_id = :emergency_id";
+        try(Connection con = sql2o.open()) {
+            return con.createQuery(sql).
+                    addParameter("emergency_id",emergency_id)
+                    .executeAndFetch(Task.class);
+        }
     }
 }

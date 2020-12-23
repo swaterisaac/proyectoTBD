@@ -1,27 +1,17 @@
 package grupo2.proyectoTBD.services;
 
 
-import grupo2.proyectoTBD.models.Status;
-import grupo2.proyectoTBD.models.User;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import grupo2.proyectoTBD.repositories.InstitutionRepository;
+import grupo2.proyectoTBD.repositories.StatusRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import grupo2.proyectoTBD.repositories.EmergencyRepository;
 
 import grupo2.proyectoTBD.models.Emergency;
 
-import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -29,11 +19,15 @@ import java.util.List;
 public class EmergencyService {
 
     private final EmergencyRepository EmergencyRepository;
+    private final InstitutionRepository institutionRepository;
+    private final StatusRepository statusRepository;
     private final Gson gson;
 
-    EmergencyService(EmergencyRepository EmergencyRepository){
+    EmergencyService(EmergencyRepository EmergencyRepository, InstitutionRepository institutionRepository, StatusRepository statusRepository){
 
         this.EmergencyRepository = EmergencyRepository;
+        this.institutionRepository = institutionRepository;
+        this.statusRepository = statusRepository;
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
@@ -49,7 +43,7 @@ public class EmergencyService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/getall")
+    @GetMapping({"","/"})
     ResponseEntity<String> getEmergencies() {
         List<Emergency> emergencies = EmergencyRepository.getEmergencies();
         return new ResponseEntity<>(
@@ -57,11 +51,12 @@ public class EmergencyService {
                 HttpStatus.OK);
     }
 
-    @PostMapping("/new")
+    @PostMapping({"","/"})
     ResponseEntity<String> newEmergency(@RequestBody String request){
         Emergency emergency = gson.fromJson(request,Emergency.class);
-        emergency = EmergencyRepository.newEmergency(emergency);
-        if(emergency != null){
+
+        if(emergency != null && emergency.getId_institution() != null && emergency.getFinal_date() != null && emergency.getDescription() != null && emergency.getId_status() != null && emergency.getName() != null && emergency.getStart_date() != null && emergency.getLongitude() != null && emergency.getLatitude() != null && statusRepository.getStatus(emergency.getId_status()) != null && institutionRepository.getInstitution(emergency.getId_institution()) != null) {
+            emergency = EmergencyRepository.newEmergency(emergency);
             return new ResponseEntity<>(
                     gson.toJson(emergency),
                     HttpStatus.OK);
@@ -69,12 +64,16 @@ public class EmergencyService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/edit/{id}")
+    @PutMapping("/{id}")
     ResponseEntity<String> editEmergency(@RequestBody String request, @PathVariable Long id){
         Emergency emergency = gson.fromJson(request,Emergency.class);
         Emergency eme = EmergencyRepository.getEmergency(id);
 
         if (emergency.getId_status() != null){
+            //Comprobación llave foránea
+            if(statusRepository.getStatus(emergency.getId_status()) == null){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             eme.setId_status(emergency.getId_status());
         }
 
@@ -95,11 +94,18 @@ public class EmergencyService {
         }
 
         if (emergency.getId_institution() != null){
+            if(institutionRepository.getInstitution(emergency.getId_institution()) == null){
+                return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+            }
             eme.setId_institution(emergency.getId_institution());
         }
 
-        if (emergency.getCreated_at() != null){
-            eme.setCreated_at(emergency.getCreated_at());
+        if (emergency.getLongitude() != null){
+            eme.setLongitude(emergency.getLongitude());
+        }
+
+        if (emergency.getLatitude() != null){
+            eme.setLatitude(emergency.getLatitude());
         }
 
         eme = EmergencyRepository.editEmergency(eme, id);
@@ -112,7 +118,7 @@ public class EmergencyService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<String> deleteEmergency(@PathVariable Long id){
         if(EmergencyRepository.deleteEmergency(id)){
             return new ResponseEntity<>(

@@ -2,8 +2,11 @@ package grupo2.proyectoTBD.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import grupo2.proyectoTBD.models.Emergency;
 import grupo2.proyectoTBD.models.Emergency_Skill;
+import grupo2.proyectoTBD.repositories.EmergencyRepository;
 import grupo2.proyectoTBD.repositories.Emergency_SkillRepository;
+import grupo2.proyectoTBD.repositories.SkillRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +17,14 @@ import java.util.List;
 @RequestMapping("/emergency-skill")
 public class Emergency_SkillService {
     private final Emergency_SkillRepository Emergency_SkillRepository;
+    private final EmergencyRepository emergencyRepository;
+    private final SkillRepository skillRepository;
     private final Gson gson;
 
-    Emergency_SkillService(Emergency_SkillRepository Emergency_SkillRepository){
-        this.Emergency_SkillRepository = Emergency_SkillRepository;
+    Emergency_SkillService(grupo2.proyectoTBD.repositories.Emergency_SkillRepository emergency_SkillRepository, EmergencyRepository emergencyRepository, SkillRepository skillRepository) {
+        Emergency_SkillRepository = emergency_SkillRepository;
+        this.emergencyRepository = emergencyRepository;
+        this.skillRepository = skillRepository;
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
@@ -32,8 +39,8 @@ public class Emergency_SkillService {
     @PostMapping({"","/"})
     ResponseEntity<String> newEmergency_Skill(@RequestBody String request){
         Emergency_Skill es = gson.fromJson(request,Emergency_Skill.class);
-        es = Emergency_SkillRepository.newEmergency_Skill(es);
-        if(es != null && es.getId_skill() != null && es.getId_emergency() != null){
+        if(es != null && es.getId_skill() != null && es.getId_emergency() != null && emergencyRepository.getEmergency(es.getId_emergency()) != null && skillRepository.getSkill(es.getId_skill()) != null){
+            es = Emergency_SkillRepository.newEmergency_Skill(es);
             return new ResponseEntity<>(
                     gson.toJson(es),
                     HttpStatus.OK);
@@ -57,9 +64,16 @@ public class Emergency_SkillService {
         Emergency_Skill es = Emergency_SkillRepository.getEmergency_Skill(id);
         if(request != null && es != null){
             if(request.getId_emergency() != null){
+                //Solo para llaves foraneas es el tercer if.
+                if(emergencyRepository.getEmergency(request.getId_emergency()) == null){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
                 es.setId_emergency(request.getId_emergency());
             }
             if(request.getId_skill() != null){
+                if(skillRepository.getSkill(request.getId_skill()) == null){
+                    return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+                }
                 es.setId_skill(request.getId_skill());
             }
             es = Emergency_SkillRepository.editEmergency_Skill(id, es);
@@ -67,13 +81,14 @@ public class Emergency_SkillService {
                     gson.toJson(es),
                     HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
     @DeleteMapping("/{id}")
     ResponseEntity<String> deleteEmergency_Skill(@PathVariable Long id){
         if(Emergency_SkillRepository.deleteEmergency_Skill(id)){
             return new ResponseEntity<>(
+                    "Se ha eliminado correctamente el Emergency_Skill con id: " + id.toString(),
                     HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);

@@ -35,7 +35,7 @@ public class InstitutionService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/getall")
+    @GetMapping({"","/"})
     ResponseEntity<String> getInstitutions() {
         List<Institution> inst = InstitutionRepository.getInstitutions();
         return new ResponseEntity<>(
@@ -43,11 +43,11 @@ public class InstitutionService {
                 HttpStatus.OK);
     }
 
-    @PostMapping("/new")
+    @PostMapping({"","/"})
     ResponseEntity<String> newInstitution(@RequestBody String request){
         Institution inst = gson.fromJson(request,Institution.class);
-        inst = InstitutionRepository.newInstitution(inst);
-        if(inst != null){
+        if(inst != null && inst.getName() != null){
+            inst = InstitutionRepository.newInstitution(inst);
             return new ResponseEntity<>(
                     gson.toJson(inst),
                     HttpStatus.OK);
@@ -55,9 +55,8 @@ public class InstitutionService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping("/edit/{id}")
-    ResponseEntity<String> editInstitution(@RequestBody String request, @PathVariable Long id){
-        Institution institution = gson.fromJson(request,Institution.class);
+    @PutMapping("/{id}")
+    ResponseEntity<String> editInstitution(@RequestBody Institution institution, @PathVariable Long id){
         Institution inst = InstitutionRepository.getInstitution(id);
 
         if (institution.getName() != null){
@@ -74,7 +73,7 @@ public class InstitutionService {
         return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     ResponseEntity<String> deleteInstitution(@PathVariable Long id){
         if(InstitutionRepository.deleteInstitution(id)){
             return new ResponseEntity<>(

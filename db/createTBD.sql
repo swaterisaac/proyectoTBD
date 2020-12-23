@@ -54,8 +54,6 @@ CREATE TABLE "emergencies" (
   "id_institution" integer NOT NULL,
   "created_at" timestamp,
   "deleted" boolean NOT NULL DEFAULT false,
-  "longitude" double precision NOT NULL,
-  "latitude" double precision NOT NULL,
   PRIMARY KEY ("id")
 );
 
@@ -106,23 +104,18 @@ CREATE TABLE "tasks" (
   "id_status" integer NOT NULL,
   "id_emergency" integer NOT NULL,
   "deleted" boolean NOT NULL DEFAULT false,
-  "longitude" double precision NOT NULL,
-  "latitude" double precision NOT NULL,
   PRIMARY KEY ("id")
 );
 
 CREATE TABLE "users" (
   "id" SERIAL,
-  "nombre" varchar(100) NOT NULL,
-  "apellido" varchar(100),
+  "rut" varchar(10) NOT NULL,
+  "first_name" varchar(100) NOT NULL,
   "email" varchar(100) NOT NULL,
-  "sexo" varchar(8) NOT NULL,
-  "dimensions" text NOT NULL,
-  "requirements" text NOT NULL,
-  "latitude" double precision NOT NULL,
-  "longitude" double precision NOT NULL,
-  "age" integer NOT NULL DEFAULT 0,
-  "password" varchar(26),
+  "password" varchar(26) NOT NULL,
+  "last_name" varchar(100),
+  "phone" varchar(10),
+  "age" integer NOT NULL,
   "deleted" boolean NOT NULL DEFAULT false,
   PRIMARY KEY ("id")
 );

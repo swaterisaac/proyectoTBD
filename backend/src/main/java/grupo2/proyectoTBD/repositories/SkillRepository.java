@@ -47,7 +47,7 @@ public class SkillRepository {
 
     public Skill editSkill(Long id,Skill skill){
         String sql = "UPDATE skills SET " +
-                "name = :name" +
+                "name = :name, " +
                 "description = :description " +
                 "WHERE id = :id and deleted = false";
         Long final_id = null;

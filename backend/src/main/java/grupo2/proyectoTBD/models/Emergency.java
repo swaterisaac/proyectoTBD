@@ -4,19 +4,22 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 import com.google.gson.annotations.SerializedName;
+import grupo2.proyectoTBD.repositories.TaskRepository;
+
 import java.io.Serializable;
+import java.util.List;
 
 public class Emergency implements Serializable {
     @SerializedName("id")
     private Long id;
     @SerializedName("id_status")
-    private Long id_status;  //No se si esta bien poner ese tipo de dato en las fk
+    private Long id_status;
     @SerializedName("name")
     private String name;
     @SerializedName("description")
     private String description;
     @SerializedName("start_date")
-    private Date start_date; //No se que tipo de dato es date.
+    private Date start_date;
     @SerializedName("final_date")
     private Date final_date;
     @SerializedName("id_institution")
@@ -25,6 +28,14 @@ public class Emergency implements Serializable {
     private Timestamp created_at;
     @SerializedName("deleted")
     private Boolean deleted;
+    @SerializedName("longitude")
+    private Double longitude;
+    @SerializedName("latitude")
+    private Double latitude;
+
+    public List<Task> getTasks(){
+        return new TaskRepository().getEmergencyTasks(this.id);
+    }
 
 	public Boolean getDeleted() {
 		return this.deleted;
@@ -91,6 +102,22 @@ public class Emergency implements Serializable {
 
     public void setId_institution(Long id_institution) {
         this.id_institution = id_institution;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 
     public Timestamp getCreated_at() {

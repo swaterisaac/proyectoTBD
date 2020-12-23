@@ -6,31 +6,45 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
 
+
+import javax.validation.constraints.NotNull;
+
 public class Task implements Serializable{
     @SerializedName("id")
     private Long id;
+    @NotNull
     @SerializedName("name")
     private String name;
+    @NotNull
     @SerializedName("description")
     private String description;
+    @NotNull
     @SerializedName("volunteer_required")
     private Integer volunteer_required;
+    @NotNull
     @SerializedName("volunteer_registered")
     private Integer volunteer_registered;
+    @NotNull
     @SerializedName("start_date")
     private Date start_date;
+    @NotNull
     @SerializedName("final_date")
     private Date final_date;
     @SerializedName("created_at")
     private Timestamp created_at;
     @SerializedName("deleted")
     private Boolean deleted;
+    @SerializedName("longitude")
+    private double longitude;
+    @SerializedName("latitude")
+    private double latitude;
 
     //foraneas
     @SerializedName("id_status")
     private Long id_status;
     @SerializedName("id_emergency")
     private Long id_emergency;
+
 
 	public Boolean getDeleted() {
 		return this.deleted;
@@ -118,6 +132,22 @@ public class Task implements Serializable{
 
     public void setId_emergency(Long id_emergency) {
         this.id_emergency = id_emergency;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
     }
 }
 
