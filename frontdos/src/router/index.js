@@ -28,6 +28,24 @@ const routes = [
     path: '/tarea/:id',
     name: 'tarea id',
     component: () => import(/* webpackChunkName: "about" */ '../views/Tarea.vue')
+  },
+
+  {
+    path: '/creartarea',
+    name: 'crear tarea',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CrearTarea.vue')
+  },
+
+  {
+    path: '/crearemergencia',
+    name: 'crear emergencia',
+    component: () => import(/* webpackChunkName: "about" */ '../views/CrearEmergencia.vue')
+  },
+
+  {
+    path: '/ubvoluntarios',
+    name: 'ubvoluntarios',
+    component: () => import(/* webpackChunkName: "about" */ '../views/UbicacionVoluntarios.vue')
   }
 ]
 
