@@ -30,7 +30,7 @@ public class TaskRepository {
     }
 
     public Task newTask(Task task){
-        String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,NOW(),:id_status, :id_emergency)";
+        String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, longitude, latitude, id_status, id_emergency) values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,NOW(),:longitude,:latitude,:id_status, :id_emergency)";
         Long id;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true).
@@ -46,7 +46,7 @@ public class TaskRepository {
 
     //edita una tupla de task en la base de datos
     public Task editTask(Task task, Long id){
-        String updateSql = "UPDATE tasks SET name = :name, description = :description, volunteer_required = :volunteer_required, volunteer_registered = :volunteer_registered, start_date = :start_date, final_date = :final_date, created_at = :created_at, id_status = :id_status, id_emergency = :id_emergency WHERE id = :id";
+        String updateSql = "UPDATE tasks SET name = :name, description = :description, volunteer_required = :volunteer_required, volunteer_registered = :volunteer_registered, start_date = :start_date, final_date = :final_date, created_at = :created_at, longitude = :longitude, latitude = :latitude, id_status = :id_status, id_emergency = :id_emergency WHERE id = :id";
         try(Connection con = sql2o.open())  {
             con.createQuery(updateSql).bind(task).addParameter("id", id).executeUpdate();
         }

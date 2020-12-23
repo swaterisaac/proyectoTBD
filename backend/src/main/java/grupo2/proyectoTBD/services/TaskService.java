@@ -62,7 +62,7 @@ public class    TaskService {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
 
-            if(task.getName() != null && task.getDescription() != null && task.getVolunteer_required() != null && task.getVolunteer_registered() != null && task.getStart_date() != null && task.getFinal_date() != null){
+            if(task.getName() != null && task.getDescription() != null && task.getVolunteer_required() != null && task.getVolunteer_registered() != null && task.getStart_date() != null && task.getFinal_date() != null && task.getLongitude() != null && task.getLatitude() != null){
                 task = TaskRepository.newTask(task);
                 return new ResponseEntity<>(
                         gson.toJson(task),
@@ -96,6 +96,12 @@ public class    TaskService {
             }
             if(request.getFinal_date() != null){
                 task.setFinal_date(request.getFinal_date());
+            }
+            if(request.getLongitude() != null){
+                task.setLongitude(request.getLongitude());
+            }
+            if(request.getLatitude() != null){
+                task.setLongitude(request.getLatitude());
             }
             if(request.getId_emergency() != null){
                 if (EmergencyRepository.getEmergency(request.getId_emergency()) == null) {
