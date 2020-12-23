@@ -28,6 +28,10 @@ public class Emergency implements Serializable {
     private Timestamp created_at;
     @SerializedName("deleted")
     private Boolean deleted;
+    @SerializedName("longitude")
+    private double longitude;
+    @SerializedName("latitude")
+    private double latitude;
 
     public List<Task> getTasks(){
         return new TaskRepository().getEmergencyTasks(this.id);
@@ -100,6 +104,22 @@ public class Emergency implements Serializable {
         this.id_institution = id_institution;
     }
 
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
     public Timestamp getCreated_at() {
         return created_at;
     }
@@ -107,4 +127,5 @@ public class Emergency implements Serializable {
     public void setCreated_at(Timestamp created_at) {
         this.created_at = created_at;
     }
+
 }

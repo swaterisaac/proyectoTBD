@@ -32,16 +32,16 @@ public class UserRepository {
     }
 
     public User newUser(User user){
-        String sql = "INSERT INTO users(rut,first_name,email,password,last_name,phone) values (:rut,:first_name,:email,:password,:last_name,:phone)";
+        String sql = "INSERT INTO users(nombre,email,password,apellido) values (:nombre,:email,:password,:apellido,:phone)";
         Long id = null;
         try(Connection con = sql2o.open()) {
-            id = con.createQuery(sql,true).
-            addParameter("rut",user.getRut())
-            .addParameter("first_name",user.getFirst_name())
+            id = con.createQuery(sql,true)
+            .addParameter("nombre",user.getNombre())
             .addParameter("email",user.getEmail())
             .addParameter("password",user.getPassword())
-            .addParameter("last_name",user.getLast_name())
-            .addParameter("phone",user.getPhone()).executeUpdate().getKey(Long.class);
+            .addParameter("apellido",user.getApellido())
+            .executeUpdate().getKey(Long.class);
+
         }
 
         if(id != null){

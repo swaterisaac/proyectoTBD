@@ -34,6 +34,10 @@ public class Task implements Serializable{
     private Timestamp created_at;
     @SerializedName("deleted")
     private Boolean deleted;
+    @SerializedName("longitude")
+    private double longitude;
+    @SerializedName("latitude")
+    private double latitude;
 
     //foraneas
     @SerializedName("id_status")
@@ -128,6 +132,22 @@ public class Task implements Serializable{
 
     public void setId_emergency(Long id_emergency) {
         this.id_emergency = id_emergency;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
     }
 }
 
