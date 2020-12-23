@@ -15,14 +15,16 @@ public class User implements Serializable{
     private String apellido;
 	@SerializedName("email")
     private String email;
+	@SerializedName("sexo")
+	private String sexo;
 	@SerializedName("dimensions")
 	private String dimensions;
 	@SerializedName("requirements")
 	private String requirements;
 	@SerializedName("longitude")
-	private double longitude;
+	private Double longitude;
 	@SerializedName("latitude")
-	private double latitude;
+	private Double latitude;
 	@SerializedName("age")
 	private Integer age;
 	@SerializedName("deleted")
@@ -62,6 +64,14 @@ public class User implements Serializable{
 		this.email = email;
 	}
 
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
 	public String getDimensions() {
 		return dimensions;
 	}
@@ -78,19 +88,19 @@ public class User implements Serializable{
 		this.requirements = requirements;
 	}
 
-	public double getLongitude() {
+	public Double getLongitude() {
 		return longitude;
 	}
 
-	public void setLongitude(double longitude) {
+	public void setLongitude(Double longitude) {
 		this.longitude = longitude;
 	}
 
-	public double getLatitude() {
+	public Double getLatitude() {
 		return latitude;
 	}
 
-	public void setLatitude(double latitude) {
+	public void setLatitude(Double latitude) {
 		this.latitude = latitude;
 	}
 

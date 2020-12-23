@@ -42,7 +42,7 @@ public class UserService {
         User user = gson.fromJson(request,User.class);
 
         if(user != null){
-            if(user.getRut() != null && user.getFirst_name() != null && user.getEmail() != null && user.getPassword() != null && user.getLast_name() != null && user.getPhone() != null) {
+            if(user.getNombre() != null && user.getApellido() != null && user.getEmail() != null && user.getSexo() != null) {
                 user = UserRepository.newUser(user);
                 return new ResponseEntity<>(
                         gson.toJson(user),
@@ -57,26 +57,29 @@ public class UserService {
         User user = UserRepository.getUser(id);
 
         if(request != null && user != null){
-            if(request.getRut() != null){
-                user.setRut(request.getRut());
+            if(request.getNombre() != null){
+                user.setNombre(request.getNombre());
             }
-            if(request.getFirst_name() != null){
-                user.setFirst_name(request.getFirst_name());
+            if(request.getApellido() != null){
+                user.setApellido(request.getApellido());
             }
             if(request.getEmail() != null){
                 user.setEmail(request.getEmail());
             }
-            if(request.getPassword() != null){
-                user.setPassword(request.getPassword());
+            if(request.getSexo() != null){
+                user.setSexo(request.getSexo());
             }
-            if(request.getLast_name() != null){
-                user.setLast_name(request.getLast_name());
+            if(request.getLongitude() != null){
+                user.setLongitude(request.getLongitude());
             }
-            if(request.getPhone() != null){
-                user.setPhone(request.getPhone());
+            if(request.getLatitude() != null){
+                user.setLatitude(request.getLatitude());
             }
             if(request.getAge() != null){
                 user.setAge(request.getAge());
+            }
+            if(request.getPassword() != null){
+                user.setPassword(request.getPassword());
             }
             user = UserRepository.editUser(id,user);
             return new ResponseEntity<>(
@@ -95,5 +98,4 @@ public class UserService {
         return new ResponseEntity<>(
                 HttpStatus.NOT_FOUND);
     }
-
 }

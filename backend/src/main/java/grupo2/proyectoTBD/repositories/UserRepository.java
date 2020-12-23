@@ -32,14 +32,18 @@ public class UserRepository {
     }
 
     public User newUser(User user){
-        String sql = "INSERT INTO users(nombre,email,password,apellido) values (:nombre,:email,:password,:apellido,:phone)";
+        String sql = "INSERT INTO users(nombre,apellido,email,sexo,latitude,longitude,age,password) values (:nombre,:apellido,:email,:sexo,:latitude,:longitude,:age,:password)";
         Long id = null;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true)
             .addParameter("nombre",user.getNombre())
-            .addParameter("email",user.getEmail())
-            .addParameter("password",user.getPassword())
             .addParameter("apellido",user.getApellido())
+            .addParameter("email",user.getEmail())
+            .addParameter("sexo",user.getSexo())
+            .addParameter("latitude",user.getLatitude())
+            .addParameter("longitude",user.getLongitude())
+            .addParameter("age",user.getAge())
+            .addParameter("password",user.getPassword())
             .executeUpdate().getKey(Long.class);
 
         }
@@ -52,12 +56,14 @@ public class UserRepository {
     }
     public User editUser(Long id, User user){
         String sql = "UPDATE users SET " +
-                "rut = :rut, " +
-                "first_name = :first_name, " +
+                "nombre = :nombre, " +
+                "apellido = :apellido, " +
                 "email = :email, " +
+                "sexo = :sexo, " +
+                "latitude = :latitude, " +
+                "longitude = :longitude, " +
+                "age = :age, " +
                 "password = :password, " +
-                "last_name = :last_name, " +
-                "phone = :phone " +
                 "WHERE id = :id and deleted = false";
         Long final_id = null;
         try(Connection con = sql2o.open()) {
