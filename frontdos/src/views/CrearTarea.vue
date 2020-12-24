@@ -142,7 +142,7 @@ export default {
   },
   methods: {
     crearemergencia: function(){
-      axios.post('http://localhost:1818/task/',{name: this.name, description: this.desc, volunteer_required: this.volRequeridos, volunteer_registered: 0, start_date: this.dateinit, final_date: this.datefinal, longitude : this.task.latlng.lng, latitude: this.task.latlng.lat, id_emergency : this.$route.params.id_emergencia})
+      axios.post('http://localhost:1818/task/',{name: this.name, description: this.desc, volunteer_required: this.volRequeridos, volunteer_registered: 0, start_date: this.dateinit, final_date: this.datefinal, longitude : this.task.latlng.lng, latitude: this.task.latlng.lat, id_emergency : this.$route.params.id_emergencia, id_status: 1})
       console.log(this.name);
       console.log(this.desc);
       console.log(this.volRequeridos);
