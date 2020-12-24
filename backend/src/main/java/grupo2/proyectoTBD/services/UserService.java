@@ -32,12 +32,12 @@ public class UserService {
         return gson.toJson(user);
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     public String getUsers(){
         List<User> users = UserRepository.getUsers();
         return gson.toJson(users);
     }
-    @PostMapping("/")
+    @PostMapping({"","/"})
     public ResponseEntity<String> newUser(@RequestBody String request){
         User user = gson.fromJson(request,User.class);
 

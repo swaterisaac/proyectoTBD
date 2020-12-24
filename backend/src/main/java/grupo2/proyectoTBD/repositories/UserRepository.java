@@ -17,7 +17,8 @@ public class UserRepository {
 
     public User getUser(Long id){
         String sql =
-                "SELECT *" + "FROM users where id = :id and deleted = false";
+                "SELECT id,nombre,apellido,email,sexo,age,password,deleted,st_y(st_astext(location)) AS latitude, st_x(st_astext(location)) AS longitude " +
+                "FROM users where id = :id and deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).addParameter("id",id).executeAndFetchFirst(User.class);
         }
@@ -25,14 +26,17 @@ public class UserRepository {
 
     public List<User> getUsers(){
         String sql =
-                "SELECT *" + "FROM users where deleted = false";
+                "SELECT id,nombre,apellido,email,sexo,age,password,deleted,st_y(st_astext(location)) AS latitude, st_x(st_astext(location)) AS longitude " +
+                "FROM users where deleted = false";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).executeAndFetch(User.class);
         }
     }
 
     public User newUser(User user){
-        String sql = "INSERT INTO users(nombre,apellido,email,sexo,latitude,longitude,age,password) values (:nombre,:apellido,:email,:sexo,:latitude,:longitude,:age,:password)";
+        String point = user.getLatitude().toString() + " " + user.getLongitude().toString();
+        String sql = "INSERT INTO users(nombre,apellido,email,sexo,location,age,password) " +
+                "values (:nombre,:apellido,:email,:sexo,ST_GeomFromText('POINT(" + point + ")', 4326),:age,:password)";
         Long id = null;
         try(Connection con = sql2o.open()) {
             id = con.createQuery(sql,true)
@@ -40,12 +44,9 @@ public class UserRepository {
             .addParameter("apellido",user.getApellido())
             .addParameter("email",user.getEmail())
             .addParameter("sexo",user.getSexo())
-            .addParameter("latitude",user.getLatitude())
-            .addParameter("longitude",user.getLongitude())
             .addParameter("age",user.getAge())
             .addParameter("password",user.getPassword())
             .executeUpdate().getKey(Long.class);
-
         }
 
         if(id != null){
@@ -55,15 +56,15 @@ public class UserRepository {
         return null;
     }
     public User editUser(Long id, User user){
+        String point = user.getLatitude().toString() + " " + user.getLongitude().toString();
         String sql = "UPDATE users SET " +
                 "nombre = :nombre, " +
                 "apellido = :apellido, " +
                 "email = :email, " +
                 "sexo = :sexo, " +
-                "latitude = :latitude, " +
-                "longitude = :longitude, " +
+                "location =  ST_GeomFromText('POINT(" + point + ")', 4326), " +
                 "age = :age, " +
-                "password = :password, " +
+                "password = :password " +
                 "WHERE id = :id and deleted = false";
         Long final_id = null;
         try(Connection con = sql2o.open()) {
