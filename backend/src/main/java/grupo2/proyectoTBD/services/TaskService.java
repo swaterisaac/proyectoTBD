@@ -42,7 +42,7 @@ public class    TaskService {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     ResponseEntity<String> getTasks(){
         List<Task> tasks = TaskRepository.getTasks();
         if (tasks!=null){ //--->> Entrega null o una lista vacía????
@@ -52,7 +52,7 @@ public class    TaskService {
     }
 
     //CREATE
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newTask(@Valid @RequestBody Task task){
         if (task!=null) {
             if (EmergencyRepository.getEmergency(task.getId_emergency()) == null) {
