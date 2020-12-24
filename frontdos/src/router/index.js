@@ -32,7 +32,7 @@ const routes = [
   },
 
   {
-    path: '/creartarea',
+    path: '/creartarea/:id_emergencia',
     name: 'crear tarea',
     component: CrearTarea
   },

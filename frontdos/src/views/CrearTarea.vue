@@ -20,7 +20,6 @@
               ref="menu"
               v-model="menu"
               :close-on-content-click="false"
-              :return-value.sync="dateinit"
               transition="scale-transition"
               offset-y
               min-width="290px"
@@ -28,25 +27,23 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="dateinit"
-                  label="Fecha inicio"
+                  label="Fecha de inicio"
                   prepend-icon="mdi-calendar"
                   readonly
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker no-title scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu = false">
-                  Cancelar
-                </v-btn>
-                <v-btn text color="primary" @click="$refs.menu.save(dateinit)">
-                  OK
-                </v-btn>
-              </v-date-picker>
+              <v-date-picker
+                ref="picker"
+                v-model="dateinit"
+                :min="new Date().toISOString().substr(0, 10)"
+                @change="save"
+              ></v-date-picker>
             </v-menu>
-
             <v-menu
+              ref="menu2"
+              v-model="menu2"
               :close-on-content-click="false"
               transition="scale-transition"
               offset-y
@@ -62,40 +59,10 @@
                   v-on="on"
                 ></v-text-field>
               </template>
-              <v-date-picker no-title scrollable>
-                <v-spacer></v-spacer>
-                <v-btn text color="primary" @click="menu = false">
-                  Cancel
-                </v-btn>
-                <v-btn text color="primary" @click="$refs.menu.save(datefinal)">
-                  OK
-                </v-btn>
-              </v-date-picker>
-            </v-menu>
-
-            <v-menu
-              ref="menu"
-              v-model="menu"
-              :close-on-content-click="false"
-              transition="scale-transition"
-              offset-y
-              min-width="290px"
-            >
-              <template v-slot:activator="{ on, attrs }">
-                <v-text-field
-                  v-model="date"
-                  label="Birthday date"
-                  prepend-icon="mdi-calendar"
-                  readonly
-                  v-bind="attrs"
-                  v-on="on"
-                ></v-text-field>
-              </template>
               <v-date-picker
                 ref="picker"
-                v-model="date"
-                :max="new Date().toISOString().substr(0, 10)"
-                min="1950-01-01"
+                v-model="datefinal"
+                :min= dateinit
                 @change="save"
               ></v-date-picker>
             </v-menu>
@@ -106,7 +73,7 @@
               class="mt-2"
               width="40%"
               color="primary"
-              v-on:click="impVariables"
+              v-on:click="crearemergencia"
             >
               Crear
             </v-btn>
@@ -125,6 +92,7 @@
 
 <script>
 import leaflet from "leaflet";
+import axios from 'axios'
 
 export default {
   name: "CrearTarea",
@@ -141,6 +109,7 @@ export default {
       dateinit: new Date().toISOString().substr(0, 10),
       datefinal: new Date().toISOString().substr(0, 10),
       menu: false,
+      menu2: false,
       date: null,
       watch: {
         menu(val) {
@@ -172,13 +141,17 @@ export default {
     this.mymap = mymap;
   },
   methods: {
-    impVariables: function () {
+    crearemergencia: function(){
+      axios.post('http://localhost:1818/task/',{name: this.name, description: this.desc, volunteer_required: this.volRequeridos, volunteer_registered: 0, start_date: this.dateinit, final_date: this.datefinal, longitude : this.task.latlng.lng, latitude: this.task.latlng.lat, id_emergency : this.$route.params.id_emergencia})
       console.log(this.name);
       console.log(this.desc);
       console.log(this.volRequeridos);
       console.log(this.dateinit);
       console.log(this.datefinal);
-    },
+      console.log(this.task.latlng);
+      console.log(this.$route.params.id_emergencia);
+      },
+    
     save(date) {
       this.$refs.menu.save(date);
     },
