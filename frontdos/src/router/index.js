@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
+import CrearTarea from '../views/CrearTarea'
 
 Vue.use(VueRouter)
 
@@ -33,7 +34,7 @@ const routes = [
   {
     path: '/creartarea',
     name: 'crear tarea',
-    component: () => import(/* webpackChunkName: "about" */ '../views/CrearTarea.vue')
+    component: CrearTarea
   },
 
   {

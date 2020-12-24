@@ -3,7 +3,7 @@
     <v-app-bar
       app
       color="dark"
-      dark
+      dark  
     >
     </v-app-bar>
     <router-view/>
