@@ -19,7 +19,7 @@ public class RegionRepository {
 
     public List<Region> getRegions(){
         String sql =
-                "SELECT gid,nom_reg FROM division_regional;";
+                "SELECT gid,nom_reg,st_y(st_astext(ST_centroid(geom))) AS latitude,st_x(st_astext(ST_centroid(geom))) AS longitude FROM division_regional;";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).executeAndFetch(Region.class);
         }

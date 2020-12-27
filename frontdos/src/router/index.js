@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import CrearTarea from '../views/CrearTarea'
+import UbicacionVoluntarios from '../views/UbicacionVoluntarios'
 
 Vue.use(VueRouter)
 
@@ -46,7 +47,7 @@ const routes = [
   {
     path: '/ubvoluntarios',
     name: 'ubvoluntarios',
-    component: () => import(/* webpackChunkName: "about" */ '../views/UbicacionVoluntarios.vue')
+    component: UbicacionVoluntarios
   }
 ]
 

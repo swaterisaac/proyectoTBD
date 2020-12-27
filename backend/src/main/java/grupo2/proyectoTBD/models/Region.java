@@ -9,6 +9,26 @@ public class Region implements Serializable {
     private Long gid;
     @SerializedName("nom_reg")
     private String nom_reg;
+    @SerializedName("longitude")
+    private Double longitude;
+    @SerializedName("latitude")
+    private Double latitude;
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
 
     public Long getGid() {
         return gid;
