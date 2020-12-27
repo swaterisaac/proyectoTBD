@@ -84,9 +84,10 @@ export default {
                 this.volunteers = response.data;
                 this.volunteers.forEach(element => {
                     var marker = leaflet.marker([element.latitude, element.longitude]).addTo(this.mymap);
-                    marker.bindTooltip(element.nombre+' '+element.apellido+' '+element.email).openTooltip();
+                    marker.bindTooltip(element.nombre+' '+element.apellido+' '+element.email);
                     this.markers.push(marker);
                 });
+                console.log(this.markers);
             });
         },
         reloadMap: function(){

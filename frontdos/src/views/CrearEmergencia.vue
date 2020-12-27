@@ -1,9 +1,9 @@
 <template>
   <v-container mt-12>
-    <v-row>
+    <v-row style="padding: 50px">
       <v-col>
         <center>
-          <h1>Crear emergencia</h1>
+          <h1 style="padding: 50px">Crear emergencia</h1>
         </center>
         <form>
           <v-text-field v-model="name" label="Nombre de emergencia"></v-text-field>
@@ -64,7 +64,11 @@
                   solo
                 ></v-select>
           <center>
-            <v-btn class="mt-2" width="40%" color="primary" v-on:click="crearemergencia">Crear</v-btn>
+            <v-btn class="mt-2" width="40%" color="primary" v-on:click="crearemergencia">Crear
+              <v-icon dark>
+                 mdi-pencil
+              </v-icon>
+            </v-btn>
           </center>
         </form>
       </v-col>
@@ -167,6 +171,6 @@ export default {
 @import "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css";
 #map {
   z-index: 0;
-  height: 800px;
+  height: 600px;
 }
 </style>

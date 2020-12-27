@@ -1,8 +1,8 @@
 <template>
   <v-container mt-12>
-    <v-row>
+    <v-row style="padding: 50px">
       <v-col>
-        <center><h1>Crear tarea</h1></center>
+        <center><h1 style="padding: 50px">Crear tarea</h1></center>
         <form>
           <v-text-field v-model="name" label="Nombre tarea"></v-text-field>
           <v-text-field v-model="desc" label="Descripción"></v-text-field>
@@ -75,13 +75,16 @@
               color="primary"
               v-on:click="creartarea"
             >
-              Crear
+              Crear  
+               <v-icon dark>
+                 mdi-pencil
+              </v-icon>
             </v-btn>
           </center>
         </form>
       </v-col>
       <v-col>
-        <v-card class="mx-auto" width="500" length="500">
+        <v-card class="mx-auto">
           <div id="map"></div>
         </v-card>
       </v-col>
@@ -161,6 +164,6 @@ export default {
 @import "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css";
 #map {
   z-index: 0;
-  height: 800px;
+  height: 600px;
 }
 </style>
