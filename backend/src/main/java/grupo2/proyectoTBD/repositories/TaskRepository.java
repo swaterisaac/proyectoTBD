@@ -32,7 +32,7 @@ public class TaskRepository {
     }
 
     public Task newTask(Task task){
-        String point = task.getLatitude().toString() + " " + task.getLongitude().toString();
+        String point = task.getLongitude().toString() + " " + task.getLatitude().toString();
         String sql = "INSERT INTO tasks(name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at, location, id_status, id_emergency) " +
                     "values (:name,:description,:volunteer_required,:volunteer_registered,:start_date,:final_date,NOW(),ST_GeomFromText('POINT(" + point + ")', 4326),:id_status, :id_emergency)";
         Long id;
@@ -50,7 +50,7 @@ public class TaskRepository {
 
     //edita una tupla de task en la base de datos
     public Task editTask(Task task, Long id){
-        String point = task.getLatitude().toString() + " " + task.getLongitude().toString();
+        String point = task.getLongitude().toString() + " " + task.getLatitude().toString();
         String updateSql = "UPDATE tasks SET name = :name, description = :description, volunteer_required = :volunteer_required, volunteer_registered = :volunteer_registered, start_date = :start_date, " +
                             "final_date = :final_date, location =  ST_GeomFromText('POINT(" + point + ")', 4326), id_status = :id_status, id_emergency = :id_emergency " +
                             "WHERE id = :id AND deleted = false";

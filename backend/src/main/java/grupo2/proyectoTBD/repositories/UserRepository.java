@@ -34,7 +34,7 @@ public class UserRepository {
     }
 
     public User newUser(User user){
-        String point = user.getLatitude().toString() + " " + user.getLongitude().toString();
+        String point = user.getLongitude().toString() + " " + user.getLatitude().toString();
         String sql = "INSERT INTO users(nombre,apellido,email,sexo,location,age,password) " +
                 "values (:nombre,:apellido,:email,:sexo,ST_GeomFromText('POINT(" + point + ")', 4326),:age,:password)";
         Long id = null;
@@ -56,7 +56,7 @@ public class UserRepository {
         return null;
     }
     public User editUser(Long id, User user){
-        String point = user.getLatitude().toString() + " " + user.getLongitude().toString();
+        String point = user.getLongitude().toString() + " " + user.getLatitude().toString();
         String sql = "UPDATE users SET " +
                 "nombre = :nombre, " +
                 "apellido = :apellido, " +

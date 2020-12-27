@@ -44,7 +44,7 @@ public class EmergencyRepository{
     }
 
     public Emergency newEmergency(Emergency emergency){
-        String point = emergency.getLatitude().toString() + " " + emergency.getLongitude().toString();
+        String point = emergency.getLongitude().toString() + " " + emergency.getLatitude().toString();
         String sql = "INSERT INTO emergencies(id_status, name, description, start_date, final_date, id_institution, created_at, location) " +
                 "values (:id_status, :name, :description, :start_date, :final_date, :id_institution, NOW(), ST_GeomFromText('POINT(" + point + ")', 4326))";
         Long id = null;
@@ -69,7 +69,7 @@ public class EmergencyRepository{
     }
 
     public Emergency editEmergency(Emergency emergency, Long id){
-        String point = emergency.getLatitude().toString() + " " + emergency.getLongitude().toString();
+        String point = emergency.getLongitude().toString() + " " + emergency.getLatitude().toString();
         String sql = "UPDATE emergencies " +
                 "SET id_status = :id_status, name = :name, description = :description, start_date = :start_date, final_date = :final_date, " +
                 "id_institution = :id_institution, location = ST_GeomFromText('POINT(" + point + ")', 4326) " +

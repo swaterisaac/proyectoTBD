@@ -67,7 +67,6 @@
             <v-btn class="mt-2" width="40%" color="primary" v-on:click="crearemergencia">Crear</v-btn>
           </center>
         </form>
-        {{ this.task.latlng }}
       </v-col>
       <v-col>
         <v-card class="mx-auto" width="500" length="500">

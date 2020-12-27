@@ -79,7 +79,6 @@
             </v-btn>
           </center>
         </form>
-        {{ this.task.latlng }}
       </v-col>
       <v-col>
         <v-card class="mx-auto" width="500" length="500">
@@ -125,7 +124,6 @@ export default {
       .tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
         attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
-        maxZoom: 10,
       })
       .addTo(mymap);
 

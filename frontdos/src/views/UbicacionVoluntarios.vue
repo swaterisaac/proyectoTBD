@@ -9,6 +9,9 @@
                         v-model="selectedRegion"
                         label="Seleccione una región"
                         name="selectedTegion"
+                        item-text="nom_reg"
+                        item-value="gid"
+                        return-object
                         v-on:change="this.reloadMap"
                         solo
                         ></v-select>
@@ -79,19 +82,21 @@ export default {
         getVolunteers: function(){
             axios.get('http://localhost:1818/region/user/'+this.selectedRegion.gid).then(response => {
                 this.volunteers = response.data;
+                this.volunteers.forEach(element => {
+                    var marker = leaflet.marker([element.latitude, element.longitude]).addTo(this.mymap);
+                    this.markers.push(marker);
+                });
             });
         },
         reloadMap: function(){
-            //this.mymap._panes.markerPane.remove();
             this.markers.forEach(element => {
-                leaflet.marker([element.latitude, element.longitude]).addTo(this.mymap)
+                this.mymap.removeLayer(element);
             });
+            this.markers = [];
             this.mymap.setView([this.selectedRegion.latitude,this.selectedRegion.longitude], 8);
             this.getVolunteers();
-            this.volunteers.forEach(element => {
-                var marker = leaflet.marker([element.latitude, element.longitude]).addTo(this.mymap);
-                this.marker.
-            });
+            
+            
         }
     },
 }
