@@ -34,7 +34,7 @@ public class    RegionRepository {
         }
     }
     public List<User> getUsers(Long regionId){
-        String sql = "SELECT id, nombre, st_y(st_astext(location)) AS latitude,st_x(st_astext(location)) AS longitude" +
+        String sql = "SELECT id, nombre,apellido,email, st_y(st_astext(location)) AS latitude,st_x(st_astext(location)) AS longitude" +
                 " FROM users AS u " +
                 "INNER JOIN division_regional AS r " +
                 "ON ST_WITHIN(u.location, r.geom) " +
