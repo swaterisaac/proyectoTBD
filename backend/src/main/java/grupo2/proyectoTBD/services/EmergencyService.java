@@ -16,6 +16,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/emergency")
+@CrossOrigin(origins = "*")
+
 public class EmergencyService {
 
     private final EmergencyRepository EmergencyRepository;

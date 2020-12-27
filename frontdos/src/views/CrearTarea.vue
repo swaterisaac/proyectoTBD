@@ -73,7 +73,7 @@
               class="mt-2"
               width="40%"
               color="primary"
-              v-on:click="crearemergencia"
+              v-on:click="creartarea"
             >
               Crear
             </v-btn>
@@ -141,7 +141,7 @@ export default {
     this.mymap = mymap;
   },
   methods: {
-    crearemergencia: function(){
+    creartarea: function(){
       axios.post('http://localhost:1818/task/',{name: this.name, description: this.desc, volunteer_required: this.volRequeridos, volunteer_registered: 0, start_date: this.dateinit, final_date: this.datefinal, longitude : this.task.latlng.lng, latitude: this.task.latlng.lat, id_emergency : this.$route.params.id_emergencia, id_status: 1})
       console.log(this.name);
       console.log(this.desc);

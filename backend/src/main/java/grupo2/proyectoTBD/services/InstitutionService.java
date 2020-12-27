@@ -13,6 +13,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/institution")
+@CrossOrigin(origins = "*")
+
 public class InstitutionService {
     private final InstitutionRepository InstitutionRepository;
     private final Gson gson;
