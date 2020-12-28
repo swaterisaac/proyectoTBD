@@ -121,15 +121,14 @@ export default {
     };
   },
   mounted: function () {
-    var mymap = leaflet.map("map").setView([-38.719, -72.478], 7);
-
+    var mymap = leaflet.map("map").setView([-38.719, -72.478], 7).control.zoom({position: 'bottomright'});
+    
     leaflet
       .tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
         attribution:
           '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
       })
       .addTo(mymap);
-
     var p = this;
     mymap.on("click", function (e) {
       p.task.latlng = e.latlng;

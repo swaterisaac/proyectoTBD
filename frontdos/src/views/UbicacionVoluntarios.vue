@@ -1,5 +1,5 @@
 <template>
-    <v-container mt-12>
+    
         <div style="position: relative;">
             <div id="search">
                 <v-card class="mx-auto" width="100%" height="30">
@@ -23,10 +23,8 @@
                 <v-card class="mx-auto" width="100%" length="500">
                     <div id="map"></div>
                 </v-card>
-            </div>
-            
+            </div>       
         </div>
-    </v-container>
 
 </template>
 
@@ -50,7 +48,7 @@ export default {
         this.getRegions();
     },
     mounted: function () {
-        var mymap = leaflet.map("map").setView([-33.45, -70.6777], 10);
+        var mymap = leaflet.map('map',{ zoomControl: false}).setView([-33.45, -70.6777], 10);
 
         leaflet
         .tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
@@ -59,7 +57,7 @@ export default {
             
         })
         .addTo(mymap);
-
+        
         // var p = this;
         // mymap.on("click", function (e) {
         // p.task.latlng = e.latlng;
@@ -107,6 +105,7 @@ export default {
 <style>
 @import "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css";
 #map {
+  top: 60px;  
   height: 800px;
   width: 100%;
   z-index: 0;
@@ -123,6 +122,6 @@ export default {
     width: 300px;
     position:absolute;
     right: 30px; 
-    top: 40px
+    top: 100px
 }
 </style>
