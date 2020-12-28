@@ -105,7 +105,7 @@ export default {
 <style>
 @import "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.5.1/leaflet.css";
 #map {
-  top: 60px;  
+  top: 0;  
   height: 800px;
   width: 100%;
   z-index: 0;

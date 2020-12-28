@@ -121,7 +121,7 @@ export default {
     };
   },
   mounted: function () {
-    var mymap = leaflet.map("map").setView([-38.719, -72.478], 7).control.zoom({position: 'bottomright'});
+    var mymap = leaflet.map("map").setView([-38.719, -72.478], 7);
     
     leaflet
       .tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
