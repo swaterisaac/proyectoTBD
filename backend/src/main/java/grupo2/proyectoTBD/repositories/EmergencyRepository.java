@@ -7,10 +7,7 @@ import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
 
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -92,6 +89,9 @@ public class EmergencyRepository{
         return (id!=null);
     }
 
+    // Aquí van los metodos para bd distribuidas
+
+
     public long lastid(){
         long id = 0;
         Long new_id;
@@ -107,5 +107,48 @@ public class EmergencyRepository{
             }
         }
         return id;
+    }
+
+
+    public Emergency newEmergencyParalela(Emergency emergency){
+        String point = emergency.getLongitude().toString() + " " + emergency.getLatitude().toString();
+        long nuevoId = lastid()+1;
+        long indice = nuevoId%3;
+        String sql = String.format("INSERT INTO \"Emergencia%d\"(id, id_status, name, description, start_date, final_date, id_institution, created_at, location) " +
+                "values (:id, :id_status, :name, :description, :start_date, :final_date, :id_institution, NOW(), ST_GeomFromText('POINT(" + point + ")', 4326))", indice);
+        Long id = null;
+        try(Connection con = sql2o.open()) {
+            id = con.createQuery(sql,true).
+                    addParameter("id", nuevoId)
+                    .addParameter("id_status",emergency.getId_status())
+                    .addParameter("name",emergency.getName())
+                    .addParameter("description",emergency.getDescription())
+                    .addParameter("start_date",emergency.getStart_date())
+                    .addParameter("final_date",emergency.getFinal_date())
+                    .addParameter("id_institution",emergency.getId_institution())
+                    //.addParameter("location", emergency.getLatitude())
+                    //.addParameter("location", emergency.getLongitude())
+                    .executeUpdate().getKey(Long.class);
+        }
+
+        if(id != null){
+            emergency.setId(id);
+            return emergency;
+        }
+        return null;
+    }
+
+    public List<Emergency> getEmergenciesDist(){
+        List<Emergency> emergencias = new ArrayList();
+        for (int i = 0; i < 3; i++) {
+            String sql =
+                    String.format("SELECT id,id_status,name,description,start_date,final_date,id_institution,created_at,deleted,st_x(st_astext(location)) AS longitude," +
+                            "st_y(st_astext(location)) AS latitude " +
+                            "FROM \"Emergencia%d\" where deleted = false", i);
+            try (Connection con = sql2o.open()) {
+                emergencias.addAll(con.createQuery(sql).executeAndFetch(Emergency.class));
+            }
+        }
+        return emergencias;
     }
 }
