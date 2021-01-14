@@ -129,4 +129,12 @@ public class EmergencyService {
         return new ResponseEntity<>(
                 HttpStatus.NOT_FOUND);
     }
+
+    @GetMapping("/lastId")
+    ResponseEntity<String> getLastId(){
+        return new ResponseEntity<String>(
+                EmergencyRepository.lastid()+"",
+                HttpStatus.NOT_FOUND);
+    }
+
 }

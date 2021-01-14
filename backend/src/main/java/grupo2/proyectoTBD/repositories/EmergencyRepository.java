@@ -91,4 +91,21 @@ public class EmergencyRepository{
         }
         return (id!=null);
     }
+
+    public long lastid(){
+        long id = 0;
+        Long new_id;
+        String sql;
+        for (int i = 0; i < 3; i++) {
+            sql = String.format("SELECT * FROM \"Emergencia%d\" ORDER BY id DESC LIMIT 1",i);
+            try(Connection con = sql2o.open()) {
+                new_id = con.createQuery(sql,true)
+                        .executeScalar(Long.class);
+            }
+            if(new_id!= null && new_id > id){
+                id = new_id;
+            }
+        }
+        return id;
+    }
 }
