@@ -1,0 +1,56 @@
+[{
+  "_id": {
+    "$oid": "60039a1ab91aff669b52e2f8"
+  },
+  "id_status": "1",
+  "name": "Incendio",
+  "description": "Se esta quemando algo",
+  "id_institution": "1",
+  "longitude": "48.1644626",
+  "latitude": "40.3698651",
+  "_class": "grupo2.proyectoTBD.models.EmergencyMongo"
+},{
+  "_id": {
+    "$oid": "6003a32ec09b8c32fa67503d"
+  },
+  "id_status": "1",
+  "name": "Gato en el arbol",
+  "description": "El gatito esta atrapado hay que bajarlo del arbol",
+  "id_institution": "1",
+  "longitude": "48.1644626",
+  "latitude": "40.3698651",
+  "_class": "grupo2.proyectoTBD.models.EmergencyMongo"
+},{
+  "_id": {
+    "$oid": "6003a364c09b8c32fa67503e"
+  },
+  "id_status": "1",
+  "name": "Terremoto",
+  "description": "Con helado y pipeño",
+  "id_institution": "1",
+  "longitude": "48.1644626",
+  "latitude": "40.3698651",
+  "_class": "grupo2.proyectoTBD.models.EmergencyMongo"
+},{
+  "_id": {
+    "$oid": "6003a386c09b8c32fa67503f"
+  },
+  "id_status": "1",
+  "name": "Tusunami",
+  "description": "Con marepoto",
+  "id_institution": "1",
+  "longitude": "48.1644626",
+  "latitude": "40.3698651",
+  "_class": "grupo2.proyectoTBD.models.EmergencyMongo"
+},{
+  "_id": {
+    "$oid": "6003a3cac09b8c32fa675040"
+  },
+  "id_status": "1",
+  "name": "Accidente automovilistico",
+  "description": "Yo estoy bien, mi familia esta bien, gracias por todo",
+  "id_institution": "1",
+  "longitude": "48.1644626",
+  "latitude": "40.3698651",
+  "_class": "grupo2.proyectoTBD.models.EmergencyMongo"
+}]
