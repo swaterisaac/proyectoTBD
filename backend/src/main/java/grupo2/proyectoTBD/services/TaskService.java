@@ -3,12 +3,10 @@ package grupo2.proyectoTBD.services;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import grupo2.proyectoTBD.models.Emergency;
-import grupo2.proyectoTBD.models.Skill;
 import grupo2.proyectoTBD.models.Task;
+import grupo2.proyectoTBD.repositories.EmergencyRepository;
 import grupo2.proyectoTBD.repositories.StatusRepository;
 import grupo2.proyectoTBD.repositories.TaskRepository;
-import grupo2.proyectoTBD.repositories.EmergencyRepository;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -130,6 +128,23 @@ public class    TaskService {
             return new ResponseEntity<>(HttpStatus.OK);
         }
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
+    @GetMapping("/emergencies/{id_emergency}")
+    ResponseEntity<String> getEmergenciesTask(@PathVariable Long id_emergency){
+        Emergency emergency = EmergencyRepository.getEmergency(id_emergency);
+        System.out.println(emergency);
+        System.out.println(emergency.getTasks());
+        if(!EmergencyRepository.getEmergency(id_emergency).equals(null)){
+            List<Task> tasks = TaskRepository.getEmergencyTasks(id_emergency);
+            return new ResponseEntity<>(
+                    gson.toJson(tasks),
+                    HttpStatus.OK
+            );
+        }
+        return new ResponseEntity<>(
+                HttpStatus.NOT_FOUND
+        );
     }
 
 }

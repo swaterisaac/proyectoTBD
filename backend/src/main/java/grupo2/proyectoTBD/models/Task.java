@@ -2,12 +2,11 @@ package grupo2.proyectoTBD.models;
 
 //import java.sql.Timestamp;
 import com.google.gson.annotations.SerializedName;
+
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-
-
-import javax.validation.constraints.NotNull;
 
 public class Task implements Serializable{
     @SerializedName("id")

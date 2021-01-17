@@ -13,6 +13,10 @@ public class TaskRepository {
     @Autowired
     private Sql2o sql2o;
 
+    public TaskRepository(Sql2o sql2o) {
+        this.sql2o = sql2o;
+    }
+
     public Task getTask(Long id){
         String sql =
                 "SELECT id,name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at,id_status,id_emergency,deleted, st_y(st_astext(location)) AS latitude, st_x(st_astext(location)) AS longitude" +
@@ -72,7 +76,7 @@ public class TaskRepository {
     public List<Task> getEmergencyTasks(Long emergency_id){
         String sql =
                 "SELECT id,name,description,volunteer_required,volunteer_registered,start_date,final_date,created_at,id_status,id_emergency,deleted, st_y(st_astext(location)) AS latitude, st_x(st_astext(location)) AS longitude"
-                + " FROM tasks where deleted = false and emergency_id = :emergency_id";
+                + " FROM tasks where deleted = false and id_emergency = :emergency_id";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).
                     addParameter("emergency_id",emergency_id)

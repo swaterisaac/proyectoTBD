@@ -1,12 +1,12 @@
 package grupo2.proyectoTBD.models;
 
-import java.sql.Timestamp;
-import java.util.Date;
-
 import com.google.gson.annotations.SerializedName;
 import grupo2.proyectoTBD.repositories.TaskRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 public class Emergency implements Serializable {
@@ -32,9 +32,11 @@ public class Emergency implements Serializable {
     private Double longitude;
     @SerializedName("latitude")
     private Double latitude;
-
+    @Autowired
+    transient TaskRepository TaskRepository;
     public List<Task> getTasks(){
-        return new TaskRepository().getEmergencyTasks(this.id);
+
+        return TaskRepository.getEmergencyTasks(this.id);
     }
 	public Boolean getDeleted() {
 		return this.deleted;
