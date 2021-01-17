@@ -8,5 +8,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 import java.util.List;
 
 public interface EmergencyMongoRepository extends MongoRepository<EmergencyMongo, String> {
+
 }
 

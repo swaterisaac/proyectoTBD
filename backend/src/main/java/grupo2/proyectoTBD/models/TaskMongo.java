@@ -19,14 +19,14 @@ public class TaskMongo {
     private Integer volunteer_registered;
     private Date start_date;
     private Date final_date;
-    private Timestamp created_at;
+    private Date created_at;
     private Boolean deleted;
     private double longitude;
     private double latitude;
 
     //foraneas
     private Long id_status;
-    private Long id_emergency;
+    private ObjectId id_emergency;
 
     public ObjectId getId() {
         return id;
@@ -84,11 +84,11 @@ public class TaskMongo {
         this.final_date = final_date;
     }
 
-    public Timestamp getCreated_at() {
+    public Date getCreated_at() {
         return created_at;
     }
 
-    public void setCreated_at(Timestamp created_at) {
+    public void setCreated_at(Date created_at) {
         this.created_at = created_at;
     }
 
@@ -124,11 +124,11 @@ public class TaskMongo {
         this.id_status = id_status;
     }
 
-    public Long getId_emergency() {
+    public ObjectId getId_emergency() {
         return id_emergency;
     }
 
-    public void setId_emergency(Long id_emergency) {
+    public void setId_emergency(ObjectId id_emergency) {
         this.id_emergency = id_emergency;
     }
 }
