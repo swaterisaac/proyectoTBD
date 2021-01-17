@@ -3,8 +3,12 @@ package grupo2.proyectoTBD.services;
 import grupo2.proyectoTBD.models.TaskMongo;
 
 import grupo2.proyectoTBD.repositories.TaskMongoRepository;
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -17,6 +21,13 @@ public class TaskMongoService {
     public void create(@RequestBody TaskMongo emergency) {
 
         taskRepo.save(emergency);
+    }
+
+    @RequestMapping(value = "/aggregate/{idEmergency}", method = RequestMethod.GET)
+    @ResponseBody
+    public List<TaskMongo> aggregate(@PathVariable(value = "idEmergency") String idEmergency) {
+        ObjectId emergency = new ObjectId(idEmergency);
+        return this.taskRepo.findTasksByIdEmergency(emergency).getMappedResults();
     }
 
 }
