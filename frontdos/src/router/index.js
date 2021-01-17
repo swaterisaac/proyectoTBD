@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import CrearTarea from '../views/CrearTarea'
 import UbicacionVoluntarios from '../views/UbicacionVoluntarios'
+import Email from '../views/Email'
 
 Vue.use(VueRouter)
 
@@ -48,6 +49,12 @@ const routes = [
     path: '/ubvoluntarios',
     name: 'ubvoluntarios',
     component: UbicacionVoluntarios
+  },
+
+  {
+    path: '/enviarmail',
+    name: 'enviarmail',
+    component: Email
   }
 ]
 
