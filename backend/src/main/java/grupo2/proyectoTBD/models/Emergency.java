@@ -36,7 +36,6 @@ public class Emergency implements Serializable {
     public List<Task> getTasks(){
         return new TaskRepository().getEmergencyTasks(this.id);
     }
-
 	public Boolean getDeleted() {
 		return this.deleted;
 	}
