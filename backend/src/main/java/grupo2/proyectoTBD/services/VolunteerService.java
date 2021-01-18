@@ -30,16 +30,16 @@ public class VolunteerService {
     private final grupo2.proyectoTBD.repositories.VolunteerRepository VolunteerRepository;
     private final grupo2.proyectoTBD.repositories.UserRepository UserRepository;
     private final Gson gson;
-    @Autowired
     private JavaMailSender mailSender;
     private final grupo2.proyectoTBD.repositories.EmergencyRepository EmergencyRepository;
     private final grupo2.proyectoTBD.repositories.TaskRepository TaskRepository;
 
-    VolunteerService(VolunteerRepository VolunteerRepository, UserRepository UserRepository, EmergencyRepository EmergencyRepository, TaskRepository TaskRepository){
+    VolunteerService(VolunteerRepository VolunteerRepository, UserRepository UserRepository, EmergencyRepository EmergencyRepository, TaskRepository TaskRepository, JavaMailSender mailSender){
         this.VolunteerRepository = VolunteerRepository;
         this.UserRepository = UserRepository;
         this.EmergencyRepository = EmergencyRepository;
         this.TaskRepository = TaskRepository;
+        this.mailSender = mailSender;
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
@@ -113,7 +113,7 @@ public class VolunteerService {
         List<Long> volunteers_id= Arrays.stream(str_volunteers.substring(1,str_volunteers.length()-1).split(", ")).map(Long::parseLong)
                 .collect(Collectors.toCollection(ArrayList::new));
 
-        Task task = TaskRepository.getTask(Long.parseLong(request.get("emergency_id").toString()));
+        Task task = TaskRepository.getTask(Long.parseLong(request.get("task_id").toString()));
         Emergency emergency = EmergencyRepository.getEmergency(task.getId_emergency());
 
         String subject = "TBD: Seleccionado en la tarea: "+task.getName();
