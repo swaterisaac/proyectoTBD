@@ -26,14 +26,14 @@ public class TaskUpdateService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     String getTaskUp() {
         List<TaskUpdate> tu = TaskUpdateRepository.getTasks();
         return gson.toJson(tu);
     }
 
 
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newTaskUp(@RequestBody String request){
         TaskUpdate tu = gson.fromJson(request,TaskUpdate.class);
         if(tu != null){

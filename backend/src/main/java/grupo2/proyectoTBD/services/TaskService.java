@@ -156,9 +156,9 @@ public class    TaskService {
     ResponseEntity<String> getTaskVolunteers(@PathVariable Long id){
         Task task = TaskRepository.getTask(id);
         if(task != null){
-            List<Ranking> rankings = RankingRepository.getRankingsByTask(task.getId());
-            List<JSONObject> response = new ArrayList<>();
-            for (Ranking ranking: rankings) {
+            List<VolunteerRank> response = RankingRepository.getRankingsByTask(task.getId());
+            //List<JSONObject> response = new ArrayList<>();
+            /*for (Ranking ranking: rankings) {
                 Volunteer volunteer = VolunteerRepository.getVolunteer(ranking.getId_volunteer());
                 User user = UserRepository.getUser(volunteer.getId_user());
                 JSONObject obj = new JSONObject();
@@ -167,6 +167,8 @@ public class    TaskService {
                 obj.put("score",ranking.getScore());
                 response.add(obj);
             }
+
+             */
 
             return new ResponseEntity<>(
                     gson.toJson(response),

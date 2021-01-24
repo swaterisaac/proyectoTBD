@@ -38,7 +38,7 @@ public class VolunteerService {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
-    @GetMapping("/")
+    @GetMapping({"","/"})
     ResponseEntity<String> getVolunteeres() {
         List<Volunteer> volunteer = VolunteerRepository.getVolunteeres();
         return new ResponseEntity<>(
@@ -47,7 +47,7 @@ public class VolunteerService {
     }
 
 
-    @PostMapping("/")
+    @PostMapping({"","/"})
     ResponseEntity<String> newVolunteer(@RequestBody String request){
         Volunteer volunteer = gson.fromJson(request,Volunteer.class);
         if(volunteer != null){

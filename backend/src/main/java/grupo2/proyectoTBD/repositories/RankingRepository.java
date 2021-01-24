@@ -1,6 +1,9 @@
 package grupo2.proyectoTBD.repositories;
 
 import grupo2.proyectoTBD.models.Ranking;
+import grupo2.proyectoTBD.models.VolunteerRank;
+import net.minidev.json.JSONArray;
+import net.minidev.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.sql2o.Connection;
@@ -76,13 +79,15 @@ public class RankingRepository {
         return (id!=null);
     }
 
-    public List<Ranking> getRankingsByTask(Long id_task){
+    public List<VolunteerRank> getRankingsByTask(Long id_task){
         String sql =
-                "SELECT * FROM rankings where id_task = :id_task and flg_invited = false and deleted = false";
+                "SELECT r.score, u.nombre, v.id FROM rankings r, volunteers v,users u where r.id_task = :id_task and r.flg_invited = false and r.deleted = false" +
+                        " and v.deleted = false and v.id = r.id_volunteer" +
+                        " and u.id = v.id_user ORDER BY r.score ASC";
         try(Connection con = sql2o.open()) {
             return con.createQuery(sql).
                     addParameter("id_task",id_task)
-                    .executeAndFetch(Ranking.class);
+                    .executeAndFetch(VolunteerRank.class);
         }
     }
 
