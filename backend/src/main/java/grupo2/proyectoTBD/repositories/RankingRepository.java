@@ -76,5 +76,15 @@ public class RankingRepository {
         return (id!=null);
     }
 
+    public List<Ranking> getRankingsByTask(Long id_task){
+        String sql =
+                "SELECT * FROM rankings where id_task = :id_task and flg_invited = false and deleted = false";
+        try(Connection con = sql2o.open()) {
+            return con.createQuery(sql).
+                    addParameter("id_task",id_task)
+                    .executeAndFetch(Ranking.class);
+        }
+    }
+
 
 }

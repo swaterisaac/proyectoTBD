@@ -2,15 +2,8 @@ package grupo2.proyectoTBD.services;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import grupo2.proyectoTBD.models.Emergency;
-import grupo2.proyectoTBD.models.Task;
-import grupo2.proyectoTBD.models.User;
-import grupo2.proyectoTBD.models.Volunteer;
-import grupo2.proyectoTBD.repositories.EmergencyRepository;
-import grupo2.proyectoTBD.repositories.TaskRepository;
-import grupo2.proyectoTBD.repositories.UserRepository;
-import grupo2.proyectoTBD.repositories.VolunteerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import grupo2.proyectoTBD.models.*;
+import grupo2.proyectoTBD.repositories.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.mail.SimpleMailMessage;
@@ -33,13 +26,15 @@ public class VolunteerService {
     private JavaMailSender mailSender;
     private final grupo2.proyectoTBD.repositories.EmergencyRepository EmergencyRepository;
     private final grupo2.proyectoTBD.repositories.TaskRepository TaskRepository;
+    private final RankingRepository RankingRepository;
 
-    VolunteerService(VolunteerRepository VolunteerRepository, UserRepository UserRepository, EmergencyRepository EmergencyRepository, TaskRepository TaskRepository, JavaMailSender mailSender){
+    VolunteerService(VolunteerRepository VolunteerRepository, UserRepository UserRepository, EmergencyRepository EmergencyRepository, TaskRepository TaskRepository, JavaMailSender mailSender, grupo2.proyectoTBD.repositories.RankingRepository rankingRepository){
         this.VolunteerRepository = VolunteerRepository;
         this.UserRepository = UserRepository;
         this.EmergencyRepository = EmergencyRepository;
         this.TaskRepository = TaskRepository;
         this.mailSender = mailSender;
+        this.RankingRepository = rankingRepository;
         this.gson = new GsonBuilder().setPrettyPrinting().create();
     }
 
@@ -121,15 +116,22 @@ public class VolunteerService {
 
 
         for(Long id: volunteers_id){
-            Long volunteer_userid = VolunteerRepository.getVolunteer(id).getId_user();
-            User user = UserRepository.getUser(volunteer_userid);
-            SimpleMailMessage email = new SimpleMailMessage();
-            email.setFrom("no-contestar@tbd.cl");
-            email.setTo(user.getEmail());
-            email.setSubject(subject);
-            email.setText(String.format(message,user.getNombre()));
+            Volunteer volunteer = VolunteerRepository.getVolunteer(id);
+            if(volunteer !=null){
+                Ranking ranking = RankingRepository.getRanking(volunteer.getId());
+                ranking.setFlg_invited(true);
+                RankingRepository.editRanking(ranking.getId(), ranking);
 
-            mailSender.send(email);
+                Long volunteer_userid = volunteer.getId_user();
+                User user = UserRepository.getUser(volunteer_userid);
+                SimpleMailMessage email = new SimpleMailMessage();
+                email.setFrom("no-contestar@tbd.cl");
+                email.setTo(user.getEmail());
+                email.setSubject(subject);
+                email.setText(String.format(message,user.getNombre()));
+                mailSender.send(email);
+            }
+
         }
 
         return new ResponseEntity<>(
