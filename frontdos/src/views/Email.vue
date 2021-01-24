@@ -3,13 +3,12 @@
     <v-row>
       <v-col>
         <h2>Seleccione emergencia</h2>
-        <p>{{ model }}</p>
-        <v-card class="mx-auto scroll" max-width="400" height="400">
+        <v-card class="mx-auto scroll" max-width="400" height="300">
           <v-list>
-            <v-list-item-group v-model="model"  color="red">
-              <v-list-item v-for="(item, i) in items" :key="i">
+            <v-list-item-group v-model="model"  color="red" >
+              <v-list-item v-for="(item, i) in items" :key="i" :value="item.id" v-on:click="mostrarTareas(item.id)">
                 <v-list-item-content>
-                  <v-list-item-title v-text="item.text"></v-list-item-title>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
                 </v-list-item-content>
               </v-list-item>
             </v-list-item-group>
@@ -18,36 +17,15 @@
       </v-col>
 
       <v-col>
-        <h2>Tareas activas</h2>
-        <p>{{ model2 }}</p>
-        <v-card
-          class="mx-auto scroll"
-          height="400"
-          max-width="500"
-          v-if="model != null"
-        >
-          <v-list shaped>
-            <v-list-item-group v-model="model2" multiple>
-              <template v-for="(item, i) in items2">
-                <v-list-item
-                  :key="i"
-                  :value="item"
-                  active-class="red--text"
-                >
-                  <template v-slot:default="{ active }">
-                    <v-list-item-content>
-                      <v-list-item-title v-text="item"></v-list-item-title>
-                    </v-list-item-content>
-
-                    <v-list-item-action>
-                      <v-checkbox
-                        :input-value="active"
-                        color="red"
-                      ></v-checkbox>
-                    </v-list-item-action>
-                  </template>
-                </v-list-item>
-              </template>
+        <h2>Seleccione tarea</h2>
+        <v-card class="mx-auto scroll" max-width="400" height="300">
+          <v-list>
+            <v-list-item-group v-model="model2"  color="red" >
+              <v-list-item v-for="(item, i) in items2" :key="i" :value="item.id" v-on:click="mostrarVoluntarios(item.id)">
+                <v-list-item-content>
+                  <v-list-item-title v-text="item.name"></v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
             </v-list-item-group>
           </v-list>
         </v-card>
@@ -55,24 +33,24 @@
 
       <v-col>
         <h2>Seleccione voluntarios</h2>
-        <p>{{ model3 }}</p>
         <v-card
           class="mx-auto scroll"
-          height="400"
+          height="300"
           max-width="500"
           v-if="model2 != 0"
         >
           <v-list shaped>
             <v-list-item-group v-model="model3" multiple>
-              <template v-for="(item, i) in items2">
+              <template v-for="(item, i) in voluntarios" >
                 <v-list-item
                   :key="i"
+                  :value="item.id"
                   active-class="red--text"
                 >
                   <template v-slot:default="{ active }">
                     <v-list-item-content>
-                      <v-list-item-title v-text="item"></v-list-item-title>
-                      <v-list-item-subtitle>Puntaje: </v-list-item-subtitle>
+                      <v-list-item-title v-text="item.name"></v-list-item-title>
+                      <v-list-item-subtitle>Puntaje: {{ item.score }}</v-list-item-subtitle>
                     </v-list-item-content>
 
                     <v-list-item-action>
@@ -88,18 +66,20 @@
           </v-list>
         </v-card>
       </v-col>
-
-      <v-btn block color="black white--text"> Enviar correo </v-btn>
     </v-row>
+      <v-btn block color="black white--text" v-on:click="enviarEmail"> Enviar correo </v-btn>
   </v-container>
 </template>
 
 
 <script>
+
+import axios from 'axios';
+
 export default {
   data: () => ({
     model: null,
-    items: [
+    itemsdos: [
       {
         text: "Wifi",
       },
@@ -111,15 +91,55 @@ export default {
       },
     ],
     model2: [],
-
-    items2: ["Dog Photos", "Cat Photos", "Potatoes", "Carrots"],
+    selected: null,
+    items2: [],
     model3: [],
+    items: [],
+    voluntarios: [],
 
     mostrarTarea: null,
   }),
   mounted: function() {
       
-  }
+  },
+
+  methods:{
+    mostrarTareas: function(id){
+      this.model2 = [];
+      this.model3 = [];
+      this.voluntarios = [];
+      this.items2 = [];
+        axios.get('http://localhost:1818/task/emergencies/'+ id).then(response=>{
+          this.items2 = response.data;
+          console.log(this.items2)
+        })
+      },
+    mostrarVoluntarios: function(id){
+        this.model3 = [];
+        this.voluntarios = [];
+        axios.get('http://localhost:1818/task/' + id + '/volunteers').then(response=>{
+          this.voluntarios = response.data;
+          console.log(this.voluntarios)
+        })
+      },
+      enviarEmail: function(){
+
+        axios.post('http://localhost:1818/volunteers/email', {
+        task_id : this.model2,
+        volunteers: this.model3
+      })
+      console.log(this.model2);
+      console.log(this.model3);
+      },
+   },
+
+  created(){ 
+      axios.get('http://localhost:1818/emergency/').then(response=>{
+        this.items = response.data;
+        console.log(this.items);
+      })
+    
+    }
 };
 
 </script>

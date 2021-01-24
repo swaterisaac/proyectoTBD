@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/volunteers")
+@CrossOrigin(origins = "*")
 public class VolunteerService {
 
     private final grupo2.proyectoTBD.repositories.VolunteerRepository VolunteerRepository;
@@ -118,9 +119,9 @@ public class VolunteerService {
         for(Long id: volunteers_id){
             Volunteer volunteer = VolunteerRepository.getVolunteer(id);
             if(volunteer !=null){
-                Ranking ranking = RankingRepository.getRanking(volunteer.getId());
-                ranking.setFlg_invited(true);
-                RankingRepository.editRanking(ranking.getId(), ranking);
+                //Ranking ranking = RankingRepository.getRanking(volunteer.getId());
+                //ranking.setFlg_invited(true);
+                //RankingRepository.editRanking(ranking.getId(), ranking);
 
                 Long volunteer_userid = volunteer.getId_user();
                 User user = UserRepository.getUser(volunteer_userid);
