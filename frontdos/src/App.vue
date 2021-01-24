@@ -19,7 +19,7 @@
     <v-footer fixed padless>
       <v-col class="text-center" cols="12">
         {{ new Date().getFullYear() }} —
-        <strong>Equipo 2 TBD.</strong>
+        <strong>Equipo 2 Taller BD.</strong>
       </v-col>
     </v-footer>
   </v-app>
