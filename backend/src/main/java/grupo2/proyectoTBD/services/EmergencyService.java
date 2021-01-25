@@ -56,14 +56,13 @@ public class EmergencyService {
     @PostMapping({"","/"})
     ResponseEntity<String> newEmergency(@RequestBody String request){
         Emergency emergency = gson.fromJson(request,Emergency.class);
-
         if(emergency != null && emergency.getId_institution() != null && emergency.getFinal_date() != null && emergency.getDescription() != null && emergency.getId_status() != null && emergency.getName() != null && emergency.getStart_date() != null && emergency.getLongitude() != null && emergency.getLatitude() != null && statusRepository.getStatus(emergency.getId_status()) != null && institutionRepository.getInstitution(emergency.getId_institution()) != null) {
             emergency = EmergencyRepository.newEmergency(emergency);
             return new ResponseEntity<>(
                     gson.toJson(emergency),
                     HttpStatus.OK);
         }
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
     @PutMapping("/{id}")
@@ -144,8 +143,8 @@ public class EmergencyService {
     ResponseEntity<String> newEmergencyParalela(@RequestBody String request){
         Emergency emergency = gson.fromJson(request,Emergency.class);
 
-        //if(emergency != null && emergency.getId_institution() != null && emergency.getFinal_date() != null && emergency.getDescription() != null && emergency.getId_status() != null && emergency.getName() != null && emergency.getStart_date() != null && emergency.getLongitude() != null && emergency.getLatitude() != null && statusRepository.getStatus(emergency.getId_status()) != null && institutionRepository.getInstitution(emergency.getId_institution()) != null) {
-        if(true){
+        //
+        if(emergency != null && emergency.getId_institution() != null && emergency.getFinal_date() != null && emergency.getDescription() != null && emergency.getId_status() != null && emergency.getName() != null && emergency.getStart_date() != null && emergency.getLongitude() != null && emergency.getLatitude() != null && statusRepository.getStatus(emergency.getId_status()) != null && institutionRepository.getInstitution(emergency.getId_institution()) != null){
             emergency = EmergencyRepository.newEmergencyParalela(emergency);
             return new ResponseEntity<>(
                     gson.toJson(emergency),

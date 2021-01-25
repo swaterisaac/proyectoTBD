@@ -1,7 +1,7 @@
 # Backend
 
 ## Documentación API REST
-
+###` Agregar el archivo aplication.properties (que estará en el drive) a la ruta backend/src/main/resources`
 ### Consulta API
 `GET /consult/` - Entrega un listado de tareas por orden alfabético donde muestra la cantidad de voluntarios inscritos mayores a X años
 Request:
@@ -24,6 +24,11 @@ Request:
 
 `DELETE /emergency/10` - Elimina la emergencia 10
 
+`GET emergency/lastId` - Obtiene la última emergencia distribuida.
+
+`POST emergency/insertarDist` - Crea una nueva emergencia distribuidas.
+
+`GET emergency/obtenerDist` - Obtiene todas las emergencias distribuidas.
 ### Institutions
 `GET /institution/` - Retorna todas las instituciones
 
@@ -144,5 +149,7 @@ Request:
 `PUT /EmergencySkillTask/10` - Edita el EmergencySkillTask 10
 
 `DELETE /EmergencySkillTask/10` - Elimina el EmergencySkillTask 10
+
+
 
 
