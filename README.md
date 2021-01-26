@@ -15,7 +15,7 @@ Si desea crear la base de datos, correr el script `db/createTBD.sql` en Postgres
 
 El dump completo de la base de datos se encuentra en `db/dump.sql`.
 
-### Backend
+# Backend
 En la terminal dirigirse a la carpeta `backend/`.
 
 ## Documentación API REST
@@ -185,7 +185,7 @@ Request:
 `DELETE /EmergencySkillTask/10` - Elimina el EmergencySkillTask 10
 
 
-### Frontend
+# Frontend
 
 En la terminal dirigirse a la carpeta `frontdos/`.
 
