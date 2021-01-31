@@ -6,7 +6,8 @@ plugins {
 
 group = 'grupo2'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '9'
+targetCompatibility = '15'
+sourceCompatibility = '15'
 
 repositories {
 	mavenCentral()
